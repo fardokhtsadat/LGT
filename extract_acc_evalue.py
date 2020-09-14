@@ -39,12 +39,14 @@ def search_pkl_df(content):
             species.setdefault(element, [])
             species[element].append(content[i])
         species = {k: v for k, v in species.items() if v}
+    for j in species:
+        species[j] = list(set(species[j]))
     empty_df = pd.DataFrame()
-    for i in species:
-        pickle_df = '%s_EUK_df.pkl' % (i)
+    for z in species:
+        pickle_df = '%s_EUK_df.pkl' % (z)
         df = pd.read_pickle(pickle_df)
-        for j in range(len(species[i])):
-            empty_df = empty_df.append(df.loc[df['qseqid'] == species[i][j]], ignore_index=True)
+        for h in range(len(species[z])):
+            empty_df = empty_df.append(df.loc[df['qseqid'] == species[z][h]], ignore_index=True)
     empty_df.to_csv('run_result.csv')
     
  # emove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
