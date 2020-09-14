@@ -1,9 +1,9 @@
-
 import pandas as pd
 import os
 import glob
 import pickle
 
+#directory contains the path to folders containg the blast results for each species
 directory = ['/home/users/fardokht/blast_results_all/blast_results_ALL/BOT', '/home/users/fardokht/blast_results_all/blast_results_ALL/CONGO',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/DAR', '/home/users/fardokht/blast_results_all/blast_results_ALL/ERAWAN',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/GYROMONAS', '/home/users/fardokht/blast_results_all/blast_results_ALL/Hexamita',
@@ -14,7 +14,7 @@ directory = ['/home/users/fardokht/blast_results_all/blast_results_ALL/BOT', '/h
 
 
 for species in directory:
-    all_blast_files = glob.glob('%s/*_EUK.blastp' %species)
+    all_blast_files = glob.glob('%s/*_EUK.blastp' %species) #for prokaryotes change to:'%s/*_PROK.blastp'
     full_blast_files = []
     for i in all_blast_files:  # if file is empty, remove the file form the list s
         if (os.stat(i).st_size != 0):
@@ -38,3 +38,4 @@ for species in directory:
                              'evalue': evalue_all})
 
     final_df.to_pickle("%s_EUK_df.pkl" %os.path.basename(os.path.normpath(species)))
+    #final_df.to_pickle("%s_PROK_df.pkl" %os.path.basename(os.path.normpath(species)))
