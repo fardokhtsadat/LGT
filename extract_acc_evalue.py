@@ -49,10 +49,7 @@ def search_pkl_df(content):
             empty_df = empty_df.append(df.loc[df['qseqid'] == species[z][h]], ignore_index=True)
     empty_df.to_csv('run_result.csv')
     
- # emove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
-import pandas as pd
-import functools
-
+# remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(x, df):
     EUK_df = pd.DataFrame()
     temp = df.loc[df['qseqid'] == x]
@@ -69,6 +66,7 @@ def remove_duplicate_accession(x, df):
 
 def main(df):
     import multiprocessing as mp
+    import functools
     pool = mp.Pool(processes=50)
     ans = pool.map(functools.partial(remove_duplicate_accession, df=df), list(set(df['qseqid'])))
     return ans
@@ -91,6 +89,10 @@ def get_taxid(x):
         #result = os.popen("efetch -db protein -id %s -format docsum | xtract -pattern DocumentSummary -element TaxId" % (x)).read()
         acc_taxid[x] = ''.join([int(s) for s in result.split() if s.isdigit()])
     return acc_taxid
+
+
+#----
+
 
 
 if __name__ == '__main__':
