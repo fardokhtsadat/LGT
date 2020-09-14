@@ -5,6 +5,7 @@ import os
 # a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
 
 def parse_fasta_headers(afile):
+    import os
     os.system("grep -e '>' %s >> headers_%s" %(afile, afile.split('.', 1)[0]))
     os.system("sed -i 's/>//g' headers_%s" %(afile.split('.', 1)[0]))
 
@@ -25,22 +26,20 @@ def modify_string(x):
     return content
 
 
-# following groups queries into related species
+# get_species() uses the result from modify_string(x), and groups the headers based on the species they belong to.
+# this makes the searching of related qseqids in the pickled data frames faster and more efficient since pickled data frame for the same species are not opened 
+# and closed constantly.
 def get_species(content):
     species_list = ['BOT', 'CONGO', 'DAR', 'GYROMONAS', 'Hexamita', 'IT1', 'MACHU_PICCU', 'MIS2C', 'PIG', 'SOOS4',
                     'TRIMITUS', 'VLADA7']
-
     species = {'BOT': [], 'CONGO': [], 'DAR': [], 'GYROMONAS': [], 'Hexamita': [], 'IT1': [], 'MACHU_PICCU': [],
                'MIS2C': [], 'PIG': [], 'SOOS4': [], 'TRIMITUS': [], 'VLADA7': []}
-
     for i in range(len(content)):
         if content[i].split('_')[0] in species_list:
             element = content[i].split('_')[0]
             species.setdefault(element, [])
             species[element].append(content[i])
-
         species = {k: v for k, v in species.items() if v}
-
     return species
 
 
