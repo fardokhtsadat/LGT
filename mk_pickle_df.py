@@ -1,3 +1,6 @@
+## The following script extracts some information from blast results. The input is the path to the directory of blast results for each 
+## spcies (BOT,CONGO,DAR,ERAWAN,GYROMONAS,Hexamita,IT1,MACHU_PICCU,MIS2C,PIG,SOOS4,TRIMITUS,VLADA7), and the ouput is a pickled data frame with three columns of
+## 'qseqid', 'sseqid', 'evalue'
 import pandas as pd
 import os
 import glob
