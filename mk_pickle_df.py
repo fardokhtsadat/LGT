@@ -1,6 +1,15 @@
-## The following script extracts some information from blast results. The input is the path to the directory of blast results for each 
+## The following script extracts some information from blast results. The input is the path of the directory of blast results for each 
 ## spcies (BOT,CONGO,DAR,ERAWAN,GYROMONAS,Hexamita,IT1,MACHU_PICCU,MIS2C,PIG,SOOS4,TRIMITUS,VLADA7), and the ouput is a pickled data frame with three columns of
-## 'qseqid', 'sseqid', 'evalue'
+## 'qseqid', 'sseqid', 'evalue' for each species. For example the output for BOT is a data frame saved as 'BOT_EUK_df.pkl'.
+## The script can also be used to create pickled data frames for each species from the prokaryotic blast results. To create pickled data frames for the prokaryotic 
+## blast results make the following changes:
+## uncomment the following line:
+## #all_blast_files = glob.glob('%s/*_PROK.blastp' %species) #for prokaryotes 
+## #final_df.to_pickle("%s_PROK_df.pkl" %os.path.basename(os.path.normpath(species)))
+## and comment the following line:
+## final_df.to_pickle("%s_EUK_df.pkl" %os.path.basename(os.path.normpath(species)))
+## all_blast_files = glob.glob('%s/*_EUK.blastp' %species) #for eukaryotes 
+
 import pandas as pd
 import os
 import glob
@@ -17,7 +26,8 @@ directory = ['/home/users/fardokht/blast_results_all/blast_results_ALL/BOT', '/h
 
 
 for species in directory:
-    all_blast_files = glob.glob('%s/*_EUK.blastp' %species) #for prokaryotes change to:'%s/*_PROK.blastp'
+    all_blast_files = glob.glob('%s/*_EUK.blastp' %species) #for eukaryotes 
+    #all_blast_files = glob.glob('%s/*_PROK.blastp' %species) #for prokaryotes 
     full_blast_files = []
     for i in all_blast_files:  # if file is empty, remove the file form the list s
         if (os.stat(i).st_size != 0):
