@@ -72,12 +72,14 @@ def main(df):
     return ans
 
 #--
+# edit_acc() removes the version number from an accession number. 
 def edit_acc(alist):
     edited_acc = []
     for i in alist:
         edited_acc.append(i.split('.', 1)[0])
     return edited_acc
 
+# get_taxid() gets the taxon id for each accession number.
 def get_taxid(x):
     acc_taxid = {}
     result = os.popen("blastdbcmd -entry %s -outfmt '%%T' -db /Data/nr_old/nr" % (x)).read() #try batch entry
