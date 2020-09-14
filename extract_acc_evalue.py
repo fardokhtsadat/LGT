@@ -1,5 +1,17 @@
 import pandas as pd
+import os
 
+# parse_fasta_headers() parses the headers from a fasta file and stores it in a file. parse_fasta_headers() gets name of a fasta file as input and creates 
+# a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
+
+def parse_fasta_headers(afile):
+    os.system("grep -e '>' %s >> headers_%s" %(afile, afile.split('.', 1)[0]))
+    os.system("sed -i 's/>//g' headers_%s" %(afile.split('.', 1)[0]))
+
+    
+# modify_string(x) makes sure the headers parsed from fasta files are consistent with the qseqids in pickled data frames. modify_string(x) gets the name of a 
+# file containg the parsed headers from a fasta file, and makes modifications in the names if needed. In this example, modify_string('headers_OG0000000') gets 
+# the file 'headers_OG0000000' and modifies the headers in this file if needed.
 def modify_string(x):
     with open(x) as f:
         content = f.readlines()
