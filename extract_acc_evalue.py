@@ -41,6 +41,8 @@ def get_species(content):
             species.setdefault(element, [])
             species[element].append(content[i])
         species = {k: v for k, v in species.items() if v}
+    for i in species:
+        species[i] = list(set(species[i]))
     return species
 
 
