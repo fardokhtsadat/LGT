@@ -207,7 +207,7 @@ if __name__ == '__main__':
     candidates_df = pd.DataFrame()
     for i in phylum_only:
         candidates_df = candidates_df.append(top_df.loc[top_df['name'].str.lower() == i.lower()])
-    #candidates_df.to_csv('candidates_df.csv')
+    candidates_df.to_csv('candidates_df.csv')
 
 
 
