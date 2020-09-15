@@ -32,17 +32,17 @@ def modify_string(x):
 # First, search_pkl_df() uses the result from modify_string(x) and groups the headers based on the species they belong to.
 # this makes the searching of related qseqids in the pickled data frames faster and more efficient since pickled data frame for the same species are not opened
 # and closed constantly. Next, search_pkl_df(x) searches for the qseqids in the pickled data frames and create a csv file.
-def get_species(content):
+def get_species(x):
     species_list = ['BOT', 'CONGO', 'DAR', 'GYROMONAS', 'Hexamita', 'IT1', 'MACHU_PICCU', 'MIS2C', 'PIG', 'SOOS4','TRIMITUS', 'VLADA7']
     species = {'BOT': [], 'CONGO': [], 'DAR': [], 'GYROMONAS': [], 'Hexamita': [], 'IT1': [], 'MACHU_PICCU': [],'MIS2C': [], 'PIG': [], 'SOOS4': [], 'TRIMITUS': [], 'VLADA7': []}
-    for i in range(len(content)):
-        if content[i].split('_')[0] in species_list:
-            element = content[i].split('_')[0]
+    for i in range(len(x)):
+        if x[i].split('_')[0] in species_list:
+            element = x[i].split('_')[0]
             species.setdefault(element, [])
-            species[element].append(content[i])
+            species[element].append(x[i])
         species = {k: v for k, v in species.items() if v}
-    for i in species:
-        species[i] = list(set(species[i]))
+    for j in species:
+        species[j] = list(set(species[j]))
     return species
 
 
