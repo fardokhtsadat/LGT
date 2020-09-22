@@ -25,7 +25,6 @@ def get_taxonomy(pickled_dict):
             f.write("%s\n" %(item))
     #
     os.system('taxonkit lineage only_taxids.txt | tee lineage.txt')
-    print('os command is done')
     taxa_dict = {}
     with open("lineage.txt") as data:
         for line in data.read().split("\n"):
@@ -36,12 +35,9 @@ def get_taxonomy(pickled_dict):
                 taxonomy = line.split("\t")[1]
                 taxa_dict[taxid] = taxonomy
     #
-    print("reading in acc_taxonid.txt")
+    #print("reading in acc_taxonid.txt")
     df = pd.read_csv('acc_taxonid.txt', sep = '\t', header=None)
-    print(df)
     df['taxonomy'] = np.nan
-    print(df)
-    print(taxa_dict)
     for z in taxa_dict:
         df.loc[df[1] == int(z), 'taxonomy'] = taxa_dict[z]
     #
