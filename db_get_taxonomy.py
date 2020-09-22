@@ -48,7 +48,7 @@ def get_taxonomy(pickled_dict):
     df.to_csv('%s_df.txt' %(pickled_dict))
     os.system('rm acc_taxonid.txt')
     os.system('rm only_taxids.txt')
-    os.system('lineage.txt')
+    os.system('rm lineage.txt')
 
 
 
