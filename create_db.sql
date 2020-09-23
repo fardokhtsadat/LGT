@@ -7,3 +7,13 @@ CREATE TABLE acc_taxid_taxonomy (
     taxonomy varchar(800) NOT NULL,
     PRIMARY KEY (id)
 );
+
+
+# IMPORT DATA:
+LOAD DATA LOCAL INFILE 'afile'
+INTO TABLE acc_taxid_taxonomy
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(accession, taxid, taxonomy);
+
