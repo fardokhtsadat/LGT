@@ -41,7 +41,7 @@ def get_taxonomy(pickled_dict):
     for z in taxa_dict:
         df.loc[df[1] == int(z), 'taxonomy'] = taxa_dict[z]
     #
-    df.to_csv('%s_df.txt' %(pickled_dict))
+    df.to_csv('%s_df.txt' %(pickled_dict), index=False)
     os.system('rm acc_taxonid.txt')
     os.system('rm only_taxids.txt')
     os.system('rm lineage.txt')
