@@ -17,7 +17,7 @@ def extract_blast(x):
     return temp_dict_accession, temp_dict_evalue
 
 
-all_pickled_dfs = glob.glob('/home/users/fardokht/EUK_pickled_df/*_EUK_df.pkl')
+all_pickled_dfs = glob.glob('~/EUK_pickled_df/*_EUK_df.pkl')
 
 for i in all_pickled_dfs:
     accession, evalue = extract_blast(i)
