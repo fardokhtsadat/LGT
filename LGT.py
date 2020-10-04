@@ -142,15 +142,14 @@ def assign_taxid_taxonomy(df, Glob):
     df['taxonomy'] = np.nan
     df['sseqid'] = df['sseqid'].apply(lambda x: x.split('.', 1)[0])
     for i in Glob:
-        df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = int(Glob[i][0]), Glob[i][1]
+        df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = str(Glob[i][0]), Glob[i][1]
     return df
 
 # find_name() searches for ser-defined name in the taxonomy, and return a df containing sseqid, taxids, taxonomy, name.
-
 def find_name(list_of_names, Glob, df):
     taxid_taxonomy = {}
     for i in Glob:
-        taxid_taxonomy[Glob[i][0]] = Glob[i][1].split(';')
+        taxid_taxonomy[str(Glob[i][0])] = Glob[i][1].split(';')
     all_names_df = pd.DataFrame()
     for name in list_of_names:
         temp_list = []
@@ -165,5 +164,7 @@ def find_name(list_of_names, Glob, df):
             temp_df = temp_df.append(temp)
         all_names_df = all_names_df.append(temp_df)
     return all_names_df
+
+
 
 
