@@ -18,6 +18,8 @@ def parse_fasta_headers(path_to_dir):
 # modify_string(x) makes sure the headers parsed from fasta files are consistent with the qseqids in pickled data frames. modify_string(x) gets the name of a
 # file containg the parsed headers from a fasta file, and makes modifications in the names if needed. In this example, modify_string('headers_OG0000000') gets
 # the file 'headers_OG0000000' and modifies the headers in this file if needed.
+# input is a file containg qseqids separated by '\n'
+# output is a list containing modified qseqids
 def modify_string(x):
     with open(x) as f:
         content = f.readlines()
@@ -168,6 +170,7 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
 #------------RUN-------------
-
+#parse_fasta_headers('OG0000000.fa')
+headers = modify_string('headers_OG0000000') 
 
 
