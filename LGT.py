@@ -136,14 +136,13 @@ with Pool(20) as p:
         Glob.update(i)
 
 #######
-df1['taxid'] = np.nan #add a new col
-df1['taxonomy'] = np.nan
-
-df1['sseqid'] = df1['sseqid'].apply(lambda x: x.split('.', 1)[0])
-
 def assign_taxid_taxonomy(df, Glob):
+    df['taxid'] = np.nan  # add a new col
+    #df["taxid"] = pd.to_numeric(df["taxid"])
+    df['taxonomy'] = np.nan
+    df['sseqid'] = df['sseqid'].apply(lambda x: x.split('.', 1)[0])
     for i in Glob:
-        df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = Glob[i][0], Glob[i][1]
+        df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = int(Glob[i][0]), Glob[i][1]
     return df
 
 # find_name() searches for ser-defined name in the taxonomy, and return a df containing sseqid, taxids, taxonomy, name.
