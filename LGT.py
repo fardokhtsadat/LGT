@@ -50,24 +50,21 @@ def get_species(x):
 
 
 #the following function retrives info from pickle dataframe for an orthogroup, this function is called from main_search_pkl_df
-def search_pkl_df(x, df):
+def search_pkl_df(x):
     local_df = pd.DataFrame()
-    local_df = local_df.append(df.loc[(x)])
-    # empty_df.to_csv('run_result.csv')
-    return local_df
-
-def main_search_pkl_df(species):
-    import multiprocessing as mp
-    for i in species:
+    for i in x:
         pickle_df = '%s_EUK_df.pkl' % (i)
         df = pd.read_pickle(pickle_df)
         df = df.set_index(['qseqid'])  # set index to qseqid
-        pool = mp.Pool(processes=50)  # 50 processors are used to speed up the process
-        result = pool.map(functools.partial(search_pkl_df, df=df), species[i])
-    local = pd.DataFrame()
-    for j in result:
-        local = local.append(j)
-    return local
+        for j in range(len(x[i])):
+            try:
+                local_df = local_df.append(df.loc[(x[i][j])])
+            except:
+                continue
+            # empty_df = empty_df.append(df.loc[df['qseqid'] == x[i][j]], ignore_index=True)
+    local_df['qseqid'] = local_df.index
+    local_df = local_df.reset_index(drop=True)
+    return local_df
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(df):
@@ -182,7 +179,7 @@ def sort_and_select(df):
 #parse_fasta_headers('OG0000000.fa')
 headers = modify_string('headers_OG0000000')
 species = get_species(headers)
-df = main_search_pkl_df(species)
+df = search_pkl_df(species)
 
 
 
