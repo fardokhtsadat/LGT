@@ -165,6 +165,25 @@ def find_name(list_of_names, Glob, df):
         all_names_df = all_names_df.append(temp_df)
     return all_names_df
 
-
+def sort_and_select(df):
+    df = df.sort_values(['occurrence', 'mean_eval'], ascending=[False, True])
+    # best 3 elements for each taxon id
+    top_df = df.groupby('name').head(3) #we get the top 3
+    #top_df = top_df.dropna() #remove nan values
+    # 2 random elements for each taxon id.
+    random = pd.concat([df, top_df]).drop_duplicates(keep=False)
+    #random = random.dropna()
+    unique_names =list(pd.unique(random['name'])) #get unique rank names  ##attention, nan values are included and have to be removed
+    #unique_names = [x for x in unique_names if str(x) != 'nan']
+    #unique_names[np.isnan(unique_names)] = 0
+    selected_random = pd.DataFrame()
+    for i in unique_names:
+        if len(random[random['name'] == i]) >= 2: #if there are more than two elements for this taxid
+            selected_random = selected_random.append(random[random['name'] == i].sample(n=2, replace=False))
+        else:
+            selected_random = selected_random.append(random[random['name'] == i].sample(n=1, replace=False))
+        acc_removed = list(selected_random['sseqid'])
+        random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
+        top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
 
 
