@@ -146,81 +146,25 @@ def assign_taxid_taxonomy(df, Glob):
         df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = Glob[i][0], Glob[i][1]
     return df
 
-# def run_assign_taxid_taxonomy(Glob, df):
-#     import multiprocessing as mp
-#     pool = mp.Pool(processes=20) #50 processors are used to speed up the process
-#     chunks = np.array_split(df, 20)
-#     ans = pool.map(functools.partial(assign_taxid_taxonomy, Glob = Glob), chunks)
-#     return ans
+# find_name() searches for ser-defined name in the taxonomy, and return a df containing sseqid, taxids, taxonomy, name.
 
-
-# get_taxonomic_rank() searches for ser-defined name in the taxonomy, and return a dictioary containing the taxon ids that inculde the user-defined name.
-# adict is a dictionary that contains taxon ids as keys and full taxonomy as the values
-# alist is a list containg user-defined names.
-def get_taxonomic_rank(adict, alist):
+def find_name(list_of_names, Glob, df):
     taxid_taxonomy = {}
-    items_found = {}
-    for i in adict:
-        taxid_taxonomy[adict[i][0]] = adict[i][1].split(';')
-    for j in taxid_taxonomy:
-        if any(s in alist for s in taxid_taxonomy[j]):
-            items_found[j] = taxid_taxonomy[j]
-    return items_found
-
-
-candidates = get_taxonomic_rank(Glob, alist)
-for i in candidates:
-    df1.loc[df1['taxid'] == i, 'candidate'] = 'found'
-
-#sort_and_select sorts the df based on occurrence descending and evalue ascending:
-#from the sorted df, it gets the top 3 acc and 2 random acc numbers.
-def sort_and_select(df):
-    df1 = df1.sort_values(['occurrence', 'mean_eval'], ascending=[False, True])
-    # best 3 elements for each taxon id
-    top_df = df1.groupby('taxid').head(3) #we get the top 3
-    top_df = top_df.dropna() #remove nan values
-    # 2 random elements for each taxon id.
-    random = pd.concat([df1, top_df]).drop_duplicates(keep=False)
-    random = random.dropna()
-    unique_names =list(pd.unique(random['taxid'])) #get unique rank names  ##attention, nan values are included and have to be removed
-    unique_names = [x for x in unique_names if str(x) != 'nan']
-    #unique_names[np.isnan(unique_names)] = 0
-    selected_random = pd.DataFrame()
-    for i in unique_names:
-        if len(random[random['taxid'] == i]) >= 2: #if there are more than two elements for this taxid
-            selected_random = selected_random.append(random[random['taxid'] == i].sample(n=2, replace=False))
-        else:
-            selected_random = selected_random.append(random[random['taxid'] == i].sample(n=1, replace=False))
-    for i in unique_names:
-        if len(random[random['taxid'] == i]) >= 2: #if there are more than two elements for this taxid
-            selected_random = selected_random.append(random[random['taxid'] == i].sample(n=2, replace=False))
-        else:
-            selected_random = selected_random.append(random[random['taxid'] == i].sample(n=1, replace=False))
-    return top_df, selected_random
-
-
-#------------------
-
-user_defined_names = ['Opisthokonta', 'Fungi', 'Metazoa']
-
-taxid_taxonomy = {}
-
-for i in Glob:
-    taxid_taxonomy[Glob[i][0]] = Glob[i][1].split(';')
-
-all_names_df = pd.DataFrame()
-for name in user_defined_names:
-    temp_list = []
-    temp_df = pd.DataFrame()
-    for j in taxid_taxonomy:
-        if name in taxid_taxonomy[j]:
-            temp_list.append(j)
-    for taxid in temp_list:
-        temp = df1.loc[df1['taxid'] == taxid]
-        temp['name'] = np.nan
-        temp.loc[temp['taxid'] == taxid, 'name'] = name
-        temp_df = temp_df.append(temp)
-    all_names_df = all_names_df.append(temp_df)
-    
+    for i in Glob:
+        taxid_taxonomy[Glob[i][0]] = Glob[i][1].split(';')
+    all_names_df = pd.DataFrame()
+    for name in list_of_names:
+        temp_list = []
+        temp_df = pd.DataFrame()
+        for j in taxid_taxonomy:
+            if name in taxid_taxonomy[j]:
+                temp_list.append(j)
+        for taxid in temp_list:
+            temp = df.loc[df['taxid'] == taxid]
+            temp['name'] = np.nan
+            temp.loc[temp['taxid'] == taxid, 'name'] = name
+            temp_df = temp_df.append(temp)
+        all_names_df = all_names_df.append(temp_df)
+    return all_names_df
 
 
