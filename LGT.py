@@ -167,32 +167,33 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
 #------------RUN-------------
-#parse_fasta_headers('OG0000000.fa')
-headers = modify_string('headers_OG0000000')
-species = get_species(headers)
-df = search_pkl_df(species)
-
-with Pool(40) as p:
-    all_df = []
-    for qseqid, df_qseqid in df.groupby('qseqid'):
-        all_df.append(df_qseqid)
-    res = p.map(remove_duplicate_accession, all_df)
-    merged_df = pd.DataFrame()
-    for i in res:  # the for-loop merges the results retrieved from multiple processors
-        merged_df = merged_df.append(i, ignore_index=True)
-
-df = get_hitproportion_meaneval(merged_df)
-
-accessions = remove_version_number(list(df['sseqid']))
-chunks = [accessions[i:i + 1000] for i in range(0, len(accessions), 1000)]
-
-with Pool(40) as p:
-    res = p.map(get_taxid_taxonomy, chunks)
-    Glob = {}  # to join the results from the parallel run
-    for i in res:
-        Glob.update(i)
-        
-df1 = assign_taxid_taxonomy(df, Glob)
-df2 = find_name(list_of_names, Glob, df1)
-sort_and_select(df2)
+if __name__ == "__main__":
+    #parse_fasta_headers('OG0000000.fa')
+    headers = modify_string('headers_OG0000000')
+    species = get_species(headers)
+    df = search_pkl_df(species)
+    #
+    with Pool(40) as p:
+        all_df = []
+        for qseqid, df_qseqid in df.groupby('qseqid'):
+            all_df.append(df_qseqid)
+        res = p.map(remove_duplicate_accession, all_df)
+        merged_df = pd.DataFrame()
+        for i in res:  # the for-loop merges the results retrieved from multiple processors
+            merged_df = merged_df.append(i, ignore_index=True)
+    #
+    df = get_hitproportion_meaneval(merged_df)
+    #
+    accessions = remove_version_number(list(df['sseqid']))
+    chunks = [accessions[i:i + 1000] for i in range(0, len(accessions), 1000)]
+    #
+    with Pool(40) as p:
+        res = p.map(get_taxid_taxonomy, chunks)
+        Glob = {}  # to join the results from the parallel run
+        for i in res:
+            Glob.update(i)
+    #
+    df1 = assign_taxid_taxonomy(df, Glob)
+    df2 = find_name(list_of_names, Glob, df1)
+    sort_and_select(df2)
 
