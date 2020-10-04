@@ -61,27 +61,10 @@ def search_pkl_df(x):
     return empty_df
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
-# This functioned is called trough main(df).
-def remove_duplicate_accession(x, df):
-    EUK_df = pd.DataFrame()
-    temp = df.loc[df['qseqid'] == x]
-    accession_occurrence = (temp['sseqid'].value_counts()).to_dict()
-    for j in accession_occurrence:
-        if accession_occurrence[j] != 1:
-            minimum = temp.loc[temp['sseqid'] == j]['evalue'].min()
-            candidate = temp.loc[(temp['sseqid'] == j) & (temp['evalue'] == minimum)]
-            candidate = candidate.sample(n=1)
-            EUK_df = EUK_df.append(candidate, ignore_index=True)
-        else:
-            EUK_df = EUK_df.append(temp.loc[temp['sseqid'] == j], ignore_index=True)
-    return EUK_df
-
-def main(df):
-    import multiprocessing as mp
-    pool = mp.Pool(processes=20) #50 processors are used to speed up the process
-    ans = pool.map(functools.partial(remove_duplicate_accession, df=df), list(set(df['qseqid'])))
-    return ans
-
+def remove_duplicate_accession(df):
+    df = df.groupby('sseqid', group_keys=True).apply(lambda x: x.loc[x.evalue.idxmin()])
+    df = df.reset_index(drop=True)
+    return df
 
 # get_hitproportion_meaneval() calculates the proportion of hits and mean e-value for each accession number.
 # get_hitproportion_meaneval() gets a dataframe as input and retruns a dataframe with three columns of 'sseqid', 'occurrence', 'mean_eval'
