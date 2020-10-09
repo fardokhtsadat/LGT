@@ -32,7 +32,7 @@ for species in directory:
     for i in all_blast_files:  # if file is empty, remove the file form the list s
         if (os.stat(i).st_size != 0):
             full_blast_files.append(i)
-
+            #
     qseqid_all = []
     sseqid_all = []
     evalue_all = []
@@ -49,6 +49,5 @@ for species in directory:
     final_df = pd.DataFrame({'qseqid': qseqid_all,
                              'sseqid': sseqid_all,
                              'evalue': evalue_all})
-
     final_df.to_pickle("%s_EUK_df.pkl" %os.path.basename(os.path.normpath(species)))
     #final_df.to_pickle("%s_PROK_df.pkl" %os.path.basename(os.path.normpath(species)))
