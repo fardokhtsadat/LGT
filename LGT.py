@@ -51,20 +51,17 @@ def get_species(x):
 
 #the following function retrives info from pickle dataframe for an orthogroup, this function is called from main_search_pkl_df
 def search_pkl_df(x):
-    local_df = pd.DataFrame()
+    alist = []
     for i in x:
         pickle_df = '%s_EUK_df.pkl' % (i)
-        df = pd.read_pickle(pickle_df)
-        df = df.set_index(['qseqid'])  # set index to qseqid
-        for j in range(len(x[i])):
-            try:
-                local_df = local_df.append(df.loc[(x[i][j])])
-            except:
-                continue
-            # empty_df = empty_df.append(df.loc[df['qseqid'] == x[i][j]], ignore_index=True)
-    local_df['qseqid'] = local_df.index
-    local_df = local_df.reset_index(drop=True)
-    return local_df
+        df = pd.read_pickle(pickle_df) #read in df
+        local_df = pd.DataFrame() #an empty df
+        local_df['qseqid'] = x[i] #local_df is equal to the values of the key 'i'
+        alist.append(local_df.merge(df, left_on='qseqid', right_on='qseqid'))
+    merged_df = pd.DataFrame()
+    for i in alist:  # the for-loop merges the results retrieved from multiple processors
+        merged_df = merged_df.append(i, ignore_index=True)
+    return merged_df
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(df):
@@ -173,16 +170,9 @@ if __name__ == "__main__":
     species = get_species(headers)
     df = search_pkl_df(species)
     #
-    with Pool(40) as p:
-        all_df = []
-        for qseqid, df_qseqid in df.groupby('qseqid'):
-            all_df.append(df_qseqid)
-        res = p.map(remove_duplicate_accession, all_df)
-        merged_df = pd.DataFrame()
-        for i in res:  # the for-loop merges the results retrieved from multiple processors
-            merged_df = merged_df.append(i, ignore_index=True)
+    df = remove_duplicate_accession(df)
     #
-    df = get_hitproportion_meaneval(merged_df)
+    df = get_hitproportion_meaneval(df)
     #
     accessions = remove_version_number(list(df['sseqid']))
     chunks = [accessions[i:i + 1000] for i in range(0, len(accessions), 1000)]
