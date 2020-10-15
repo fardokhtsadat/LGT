@@ -170,7 +170,14 @@ if __name__ == "__main__":
     species = get_species(headers)
     df = search_pkl_df(species)
     #
-    df = remove_duplicate_accession(df)
+    with Pool(40) as p:
+        all_df = []
+        for qseqid, df_qseqid in df.groupby('qseqid'):
+            all_df.append(df_qseqid)
+        res = p.map(remove_duplicate_accession, all_df)
+        merged_df = pd.DataFrame()
+        for i in res:  # the for-loop merges the results retrieved from multiple processors
+            merged_df = merged_df.append(i, ignore_index=True)
     #
     df = get_hitproportion_meaneval(df)
     #
