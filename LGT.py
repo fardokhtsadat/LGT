@@ -170,7 +170,7 @@ if __name__ == "__main__":
     species = get_species(headers)
     df = search_pkl_df(species)
     #
-    with Pool(40) as p:
+    with Pool(30) as p:
         all_df = []
         for qseqid, df_qseqid in df.groupby('qseqid'):
             all_df.append(df_qseqid)
@@ -179,7 +179,7 @@ if __name__ == "__main__":
         for i in res:  # the for-loop merges the results retrieved from multiple processors
             merged_df = merged_df.append(i, ignore_index=True)
     #
-    df = get_hitproportion_meaneval(df)
+    df = get_hitproportion_meaneval(merged_df)
     #
     accessions = remove_version_number(list(df['sseqid']))
     chunks = [accessions[i:i + 1000] for i in range(0, len(accessions), 1000)]
