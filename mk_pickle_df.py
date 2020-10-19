@@ -19,7 +19,7 @@ import pickle
 directory = ['/home/users/fardokht/blast_results_all/blast_results_ALL/BOT', '/home/users/fardokht/blast_results_all/blast_results_ALL/CONGO',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/DAR', '/home/users/fardokht/blast_results_all/blast_results_ALL/ERAWAN',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/GYROMONAS', '/home/users/fardokht/blast_results_all/blast_results_ALL/Hexamita',
-             '/home/users/fardokht/blast_results_all/blast_results_ALL/IT1', '/home/users/fardokht/blast_results_all/blast_results_ALL/MACHU_PICCU'
+             '/home/users/fardokht/blast_results_all/blast_results_ALL/IT1', '/home/users/fardokht/blast_results_all/blast_results_ALL/MACHU_PICCU',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/MIS2C', '/home/users/fardokht/blast_results_all/blast_results_ALL/PIG',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/SOOS4', '/home/users/fardokht/blast_results_all/blast_results_ALL/TRIMITUS',
              '/home/users/fardokht/blast_results_all/blast_results_ALL/VLADA7']
@@ -50,4 +50,5 @@ for species in directory:
                              'sseqid': sseqid_all,
                              'evalue': evalue_all})
     final_df.to_pickle("%s_EUK_df.pkl" %os.path.basename(os.path.normpath(species)))
+    print(species)
     #final_df.to_pickle("%s_PROK_df.pkl" %os.path.basename(os.path.normpath(species)))
