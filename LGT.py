@@ -182,7 +182,7 @@ if __name__ == "__main__":
     #
     df = get_hitproportion_meaneval(merged_df)
     #
-    accessions = remove_version_number(list(df['sseqid']))
+    accessions = list(df['sseqid'])
     chunks = [accessions[i:i + 1000] for i in range(0, len(accessions), 1000)]
     #
     with Pool(40) as p:
