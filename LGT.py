@@ -178,7 +178,7 @@ if __name__ == "__main__":
     accessions = list(df['sseqid'])
     chunks = [accessions[i:i + 10000] for i in range(0, len(accessions), 10000)]
     #
-    with Pool(40) as p:
+    with Pool(30) as p:
         res = p.map(get_taxid_taxonomy, chunks)
         Glob = {}  # to join the results from the parallel run
         for i in res:
