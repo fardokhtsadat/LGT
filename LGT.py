@@ -104,42 +104,36 @@ def get_taxid_taxonomy(x):
     mydb = mysql.connector.connect(
         host="mole",
         user="fardokht",
-        password="",
+        password="21@hgzIyeu*Ahs",
         database="EUK_PROK_DB")
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT accession, taxid, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
+    mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
     myresult = mycursor.fetchall()
-    acc_taxid = {taxid[0]: taxid[1:] for taxid in myresult}
+    acc_taxid = {taxid[0]: taxid[1] for taxid in myresult}
     return acc_taxid
 
 #######
 def assign_taxid_taxonomy(df, Glob):
-    df['taxid'] = np.nan  # add a new col
-    #df["taxid"] = pd.to_numeric(df["taxid"])
     df['taxonomy'] = np.nan
     #df['sseqid'] = df['sseqid'].apply(lambda x: x.split('.', 1)[0])
-    for i in Glob:
-        df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = str(Glob[i][0]), Glob[i][1]
+    df['taxonomy'] = df["sseqid"].map(Glob)
     return df
 
 # find_name() searches for ser-defined name in the taxonomy, and return a df containing sseqid, taxids, taxonomy, name.
 def find_name(list_of_names, Glob, df):
-    taxid_taxonomy = {}
+    acc_taxonomy = {}
     for i in Glob:
-        taxid_taxonomy[str(Glob[i][0])] = Glob[i][1].split(';')
+        acc_taxonomy[i] = Glob[i].split(';')
     all_names_df = pd.DataFrame()
     for name in list_of_names:
+        print(name)
         temp_list = []
-        temp_df = pd.DataFrame()
-        for j in taxid_taxonomy:
-            if name in taxid_taxonomy[j]:
+        for j in acc_taxonomy:
+            if name in acc_taxonomy[j]:
                 temp_list.append(j)
-        for taxid in temp_list:
-            temp = df.loc[df['taxid'] == taxid]
-            temp['name'] = np.nan
-            temp.loc[temp['taxid'] == taxid, 'name'] = name
-            temp_df = temp_df.append(temp)
-        all_names_df = all_names_df.append(temp_df)
+        temp = df[df.sseqid.isin(temp_list)]
+        temp['name'] = name
+        all_names_df = all_names_df.append(temp)
     return all_names_df
 
 def sort_and_select(df):
@@ -182,13 +176,13 @@ if __name__ == "__main__":
     df = get_hitproportion_meaneval(merged_df)
     #
     accessions = list(df['sseqid'])
-    chunks = [accessions[i:i + 1000] for i in range(0, len(accessions), 1000)]
+    chunks = [accessions[i:i + 10000] for i in range(0, len(accessions), 10000)]
     #
     with Pool(40) as p:
         res = p.map(get_taxid_taxonomy, chunks)
         Glob = {}  # to join the results from the parallel run
         for i in res:
-            Glob.update(i)
+            Glob.update(i) #Glob contains {accession:taxonomy}
     #
     df1 = assign_taxid_taxonomy(df, Glob)
     df2 = find_name(list_of_names, Glob, df1)
