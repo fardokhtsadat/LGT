@@ -102,14 +102,13 @@ def get_taxid_taxonomy(x):
     x = tuple(x)
     import mysql.connector
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host="mole",
+        user="fardokht",
         password="",
-        database="EUK_DB")
+        database="EUK_PROK_DB")
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT accession, taxid, taxonomy FROM acc_taxid_taxonomy WHERE accession IN %s;" %(x,))
+    mycursor.execute("SELECT accession, taxid, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
     myresult = mycursor.fetchall()
-    print(myresult)
     acc_taxid = {taxid[0]: taxid[1:] for taxid in myresult}
     return acc_taxid
 
@@ -118,7 +117,7 @@ def assign_taxid_taxonomy(df, Glob):
     df['taxid'] = np.nan  # add a new col
     #df["taxid"] = pd.to_numeric(df["taxid"])
     df['taxonomy'] = np.nan
-    df['sseqid'] = df['sseqid'].apply(lambda x: x.split('.', 1)[0])
+    #df['sseqid'] = df['sseqid'].apply(lambda x: x.split('.', 1)[0])
     for i in Glob:
         df.loc[df['sseqid'] == i, ['taxid', 'taxonomy']] = str(Glob[i][0]), Glob[i][1]
     return df
