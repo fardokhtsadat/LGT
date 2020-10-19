@@ -36,8 +36,8 @@ def modify_string(x):
 # this makes the searching of related qseqids in the pickled data frames faster and more efficient since pickled data frame for the same species are not opened
 # and closed constantly. Next, search_pkl_df(x) searches for the qseqids in the pickled data frames and create a csv file.
 def get_species(x):
-    species_list = ['BOT', 'CONGO', 'DAR', 'GYROMONAS', 'Hexamita', 'IT1', 'MACHU_PICCU', 'MIS2C', 'PIG', 'SOOS4','TRIMITUS', 'VLADA7']
-    species = {'BOT': [], 'CONGO': [], 'DAR': [], 'GYROMONAS': [], 'Hexamita': [], 'IT1': [], 'MACHU_PICCU': [],'MIS2C': [], 'PIG': [], 'SOOS4': [], 'TRIMITUS': [], 'VLADA7': []}
+    species_list = ['BOT', 'CONGO', 'DAR', 'GYROMONAS', 'Hexamita', 'IT1', 'MACHU_PICCU', 'MIS2C', 'PIG', 'SOOS4','TRIMITUS', 'VLADA7', 'ERAWAN']
+    species = {'BOT': [], 'CONGO': [], 'DAR': [], 'GYROMONAS': [], 'Hexamita': [], 'IT1': [], 'MACHU_PICCU': [],'MIS2C': [], 'PIG': [], 'SOOS4': [], 'TRIMITUS': [], 'VLADA7': [], 'ERAWAN': []}
     for i in range(len(x)):
         if x[i].split('_')[0] in species_list:
             element = x[i].split('_')[0]
