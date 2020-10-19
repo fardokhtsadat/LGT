@@ -61,6 +61,7 @@ def search_pkl_df(x):
     merged_df = pd.DataFrame()
     for i in alist:  # the for-loop merges the results retrieved from multiple processors
         merged_df = merged_df.append(i, ignore_index=True)
+    merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0])
     return merged_df
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
