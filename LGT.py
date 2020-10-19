@@ -53,14 +53,14 @@ def get_species(x):
 def search_pkl_df(x):
     alist = []
     for i in x:
-        pickle_df = '%s_EUK_df.pkl' % (i)
+        pickle_df = '/home/users/fardokht/EUK_pickled_df/%s_EUK_df.pkl' % (i)
         df = pd.read_pickle(pickle_df) #read in df
         local_df = pd.DataFrame() #an empty df
         local_df['qseqid'] = x[i] #local_df is equal to the values of the key 'i'
         alist.append(local_df.merge(df, left_on='qseqid', right_on='qseqid'))
     merged_df = pd.DataFrame()
-    for i in alist:  # the for-loop merges the results retrieved from multiple processors
-        merged_df = merged_df.append(i, ignore_index=True)
+    for j in alist:  # the for-loop merges the results retrieved from multiple processors
+        merged_df = merged_df.append(j, ignore_index=True)
     merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0])
     return merged_df
 
