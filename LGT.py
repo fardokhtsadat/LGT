@@ -104,7 +104,7 @@ def get_taxid_taxonomy(x):
     mydb = mysql.connector.connect(
         host="mole",
         user="fardokht",
-        password="21@hgzIyeu*Ahs",
+        password="",
         database="EUK_PROK_DB")
     mycursor = mydb.cursor()
     mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
