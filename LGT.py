@@ -166,7 +166,7 @@ def wrapper(afile_qseqids, list_of_names):
     #
     df = remove_duplicate_accession(df)
     print('duplicated accession numbers are removed')
-    df = get_hitproportion_meaneval(merged_df)
+    df = get_hitproportion_meaneval(df)
     #
     print('hit proportions and average e-values are caluclated')
     accessions = list(df['sseqid'])
