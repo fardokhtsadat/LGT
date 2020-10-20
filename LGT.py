@@ -1,10 +1,8 @@
 import pandas as pd
-#from multiprocessing import Pool
 import numpy as np
 from math import nan
 import os
 import glob
-#import functools
 import pathlib
 import mysql.connector
 
@@ -67,8 +65,7 @@ def search_pkl_df(x):
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(df):
-    df = df.groupby(['qseqid','sseqid'], group_keys=True).apply(lambda x: x.loc[x.evalue.idxmin()])
-    df = df.reset_index(drop=True)
+    df = df.groupby(['qseqid','sseqid'], as_index=False)['evalue'].min()
     return df
 
 # get_hitproportion_meaneval() calculates the proportion of hits and mean e-value for each accession number.
