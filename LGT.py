@@ -1,11 +1,12 @@
 import pandas as pd
-from multiprocessing import Pool
+#from multiprocessing import Pool
 import numpy as np
 from math import nan
 import os
 import glob
-import functools
+#import functools
 import pathlib
+import mysql.connector
 
 # parse_fasta_headers() parses the headers from a fasta file and stores it in a file. parse_fasta_headers() gets the directory of a fasta file as input and creates
 # a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
@@ -66,7 +67,7 @@ def search_pkl_df(x):
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(df):
-    df = df.groupby('sseqid', group_keys=True).apply(lambda x: x.loc[x.evalue.idxmin()])
+    df = df.groupby(['qseqid','sseqid'], group_keys=True).apply(lambda x: x.loc[x.evalue.idxmin()])
     df = df.reset_index(drop=True)
     return df
 
@@ -100,16 +101,17 @@ def remove_version_number(alist):
 # the output of this function is a dictionary with keys being the accession number and the values being a tuple of taxon id and taxonomy.
 def get_taxid_taxonomy(x):
     x = tuple(x)
-    import mysql.connector
     mydb = mysql.connector.connect(
         host="mole",
         user="fardokht",
-        password="",
+        password="21@hgzIyeu*Ahs",
         database="EUK_PROK_DB")
     mycursor = mydb.cursor()
     mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
     myresult = mycursor.fetchall()
     acc_taxid = {taxid[0]: taxid[1] for taxid in myresult}
+    mycursor.close()
+    mydb.close()
     return acc_taxid
 
 #######
@@ -158,32 +160,31 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
         
-def wrapper(afile_qseqids, list_of_names, number_of_cpus):
+def wrapper(afile_qseqids, list_of_names):
     headers = modify_string(afile_qseqids)
+    print('input is modified')
     species = get_species(headers)
     df = search_pkl_df(species)
+    print('accession numbers and e-values are retrieved')
     #
-    with Pool(number_of_cpus) as p:
-        all_df = []
-        for qseqid, df_qseqid in df.groupby('qseqid'):
-            all_df.append(df_qseqid)
-        res = p.map(remove_duplicate_accession, all_df)
-        merged_df = pd.DataFrame()
-        for i in res:  # the for-loop merges the results retrieved from multiple processors
-            merged_df = merged_df.append(i, ignore_index=True)
-    #
+    df = remove_duplicate_accession(df)
+    print('duplicated accession numbers are removed')
     df = get_hitproportion_meaneval(merged_df)
     #
+    print('hit proportions and average e-values are caluclated')
     accessions = list(df['sseqid'])
-    chunks = [accessions[i:i + 10000] for i in range(0, len(accessions), 10000)]
+    chunks = [accessions[i:i + 15000] for i in range(0, len(accessions), 15000)]
     #
-    with Pool(number_of_cpus) as p:
-        res = p.map(get_taxid_taxonomy, chunks)
-        Glob = {}  # to join the results from the parallel run
-        for i in res:
-            Glob.update(i)  # Glob contains {accession:taxonomy}
+    res = []
+    for i in chunks:
+        res.append(get_taxid_taxonomy(i))
+    Glob = {}  # to join the results from the parallel run
+    for j in res:
+        Glob.update(j)  # Glob contains {accession:taxonomy}
     #
+    print('taxid and taxonomy is obtained')
     df1 = assign_taxid_taxonomy(df, Glob)
     df2 = find_name(list_of_names, Glob, df1)
+    print('searching for names ...')
     sort_and_select(df2)
     print('a csv file with candidate accession numbers is created')
