@@ -1,18 +1,16 @@
+import os
 import pandas as pd
 import numpy as np
 from math import nan
-import os
 import glob
-import pathlib
 import mysql.connector
 
 # parse_fasta_headers() parses the headers from a fasta file and stores it in a file. parse_fasta_headers() gets the directory of a fasta file as input and creates
 # a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
 def parse_fasta_headers(path_to_dir):
-    path = pathlib.PurePath(path_to_dir)
-    afile = path.name
-    os.system("grep -e '>' %s >> headers_%s" %(afile, afile.split('.', 1)[0]))
-    os.system("sed -i 's/>//g' headers_%s" %(afile.split('.', 1)[0]))
+    path, file_name = os.path.split(path_to_dir)
+    os.system("grep -e '>' %s >> headers_%s" %(path_to_dir, file_name.split('.', 1)[0]))
+    os.system("sed -i 's/>//g' %s/headers_%s" %(path, file_name.split('.', 1)[0]))
 
 # modify_string(x) makes sure the headers parsed from fasta files are consistent with the qseqids in pickled data frames. modify_string(x) gets the name of a
 # file containg the parsed headers from a fasta file, and makes modifications in the names if needed. In this example, modify_string('headers_OG0000000') gets
