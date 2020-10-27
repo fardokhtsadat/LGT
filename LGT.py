@@ -94,12 +94,12 @@ def remove_version_number(alist):
 
 # get_taxid_taxonomy() gets a list of accession numbers and it retrieves the taxon ids for each accession number.
 # the output of this function is a dictionary with keys being the accession number and the values being a tuple of taxon id and taxonomy.
-def get_taxid_taxonomy(x):
+def get_taxid_taxonomy(x, db_password):
     x = tuple(x)
     mydb = mysql.connector.connect(
         host="mole",
         user="fardokht",
-        password="21@hgzIyeu*Ahs",
+        password=db_password,
         database="EUK_PROK_DB")
     mycursor = mydb.cursor()
     mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
@@ -155,7 +155,7 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
         
-def wrapper(afile_qseqids, list_of_names):
+def wrapper(afile_qseqids, list_of_names, db_password):
     headers = modify_string(afile_qseqids)
     print('input is modified')
     species = get_species(headers)
@@ -172,7 +172,7 @@ def wrapper(afile_qseqids, list_of_names):
     #
     res = []
     for i in chunks:
-        res.append(get_taxid_taxonomy(i))
+        res.append(get_taxid_taxonomy(i, db_password))
     Glob = {}  # to join the results from the parallel run
     for j in res:
         Glob.update(j)  # Glob contains {accession:taxonomy}
