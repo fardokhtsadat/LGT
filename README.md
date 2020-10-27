@@ -32,8 +32,8 @@ from LGT import *
 After importing **LGT**, you can call the *wrapper()* function. *wrapper()* receives two arguments; the first argument is the orthogroup file, and the second argument is the list of species. The output of **LGT** is a csv file containg the suggested condidate accession numbers for each species. An example is shown below:
 ```python
 wrapper('/path/to/file/afile', ['Fungi', 'Metazoa'])
-
-## Attention
+```
+### Attention
 Please set your working directory to the directory of LGT. You can use the following command to set the working directory:
 ```python
 import os
