@@ -18,6 +18,8 @@ Please contact me in case of questions, comments, bug reports, etc...
 * mysql.connector
 * os
 
+Beside the aforementioned python packages, ypou will need a database to be able to retreive the taxomomic rank for the subject sequence ids. You can find the scripts to create this database for you accession numbers in this github repository.
+
 ## Installation
 The ZIP-File of the package can be downloaded via "Clone or download" as well as the command line:
 ```markdown
