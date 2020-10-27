@@ -17,3 +17,10 @@ Please contact me in case of questions, comments, bug reports, etc...
 * glob
 * mysql.connector
 * os
+
+## Installation
+The ZIP-File of the package can be downloaded via "Clone or download" as well as the command line:
+```markdown
+git clone https://github.com/fardokhtsadat/LGT.git
+```
+
