@@ -29,3 +29,11 @@ You can import **LGT** using:
 ```python
 from LGT import *
 ```
+
+## Attention
+Please set your working directory to the directory of LGT. You can use the following command to set the working directory:
+```python
+import os
+os.chdir("/path/to/LGT")
+```
+
