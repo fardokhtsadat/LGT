@@ -156,7 +156,7 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
         
-def wrapper(afile_qseqids, list_of_names, db_password):
+def wrapper(afile_qseqids, list_of_names):
     headers = modify_string(afile_qseqids)
     print('input is modified')
     species = get_species(headers)
@@ -171,6 +171,7 @@ def wrapper(afile_qseqids, list_of_names, db_password):
     accessions = list(df['sseqid'])
     chunks = [accessions[i:i + 15000] for i in range(0, len(accessions), 15000)]
     #
+    db_password = input("Enter the password to the database EUK_PROK_DB:")
     res = []
     for i in chunks:
         res.append(get_taxid_taxonomy(i, db_password))
