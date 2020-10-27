@@ -24,3 +24,8 @@ The ZIP-File of the package can be downloaded via "Clone or download" as well as
 git clone https://github.com/fardokhtsadat/LGT.git
 ```
 
+## Usage
+You can import **LGT** using:
+```python
+from LGT import *
+```
