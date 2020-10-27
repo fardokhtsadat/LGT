@@ -50,7 +50,7 @@ def get_species(x):
 def search_pkl_df(x):
     alist = []
     for i in x:
-        pickle_df = '/home/users/fardokht/EUK_pickled_df/%s_EUK_df.pkl' % (i)
+        pickle_df = '/home/users/LGT_diplo/EUK_pickled_df/%s_EUK_df.pkl' % (i)
         df = pd.read_pickle(pickle_df) #read in df
         local_df = pd.DataFrame() #an empty df
         local_df['qseqid'] = x[i] #local_df is equal to the values of the key 'i'
