@@ -129,7 +129,8 @@ def find_name(list_of_names, Glob, df):
             if name in acc_taxonomy[j]:
                 temp_list.append(j)
         temp = df[df.sseqid.isin(temp_list)]
-        temp['name'] = name
+        #temp['name'] = name
+        temp.loc[:, 'name'] = name
         all_names_df = all_names_df.append(temp)
     return all_names_df
 
