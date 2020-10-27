@@ -9,4 +9,11 @@ Please contact me in case of questions, comments, bug reports, etc...
     Author: Fardokhtsadat Mohammadi
     E-Mail: fardokht.fm@gmail.com
     
-
+## Dependencies & System Requirements
+**LGT** makes use of several python packages. Here we provide a list of used python packages:
+* pandas
+* numpy 
+* math 
+* glob
+* mysql.connector
+* os
