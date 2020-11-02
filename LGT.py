@@ -156,8 +156,8 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
         
-def wrapper(afile_qseqids, list_of_names):
-    db_password = input("Enter the password to EUK_PROK_DB database: ")
+def wrapper(afile_qseqids, list_of_names, db_password):
+    #db_password = input("Enter the password to EUK_PROK_DB database: ")
     headers = modify_string(afile_qseqids)
     print('input is modified')
     species = get_species(headers)
