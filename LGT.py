@@ -47,10 +47,11 @@ def get_species(x):
 
 
 #the following function retrives info from pickle dataframe for an orthogroup, this function is called from main_search_pkl_df
-def search_pkl_df(x):
+def search_pkl_df(x, directory):
     alist = []
     for i in x:
-        pickle_df = '/home/users/LGT_diplo/EUK_pickled_df/%s_EUK_df.pkl' % (i)
+        #pickle_df = '/home/users/LGT_diplo/EUK_pickled_df/%s_EUK_df.pkl' % (i)
+        pickle_df = '%s/%s_EUK_df.pkl' % (directory,i)
         df = pd.read_pickle(pickle_df) #read in df
         local_df = pd.DataFrame() #an empty df
         local_df['qseqid'] = x[i] #local_df is equal to the values of the key 'i'
@@ -156,12 +157,12 @@ def sort_and_select(df):
         top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
         
         
-def wrapper(afile_qseqids, list_of_names, db_password):
+def wrapper(afile_qseqids, list_of_names, directory, db_password):
     #db_password = input("Enter the password to EUK_PROK_DB database: ")
     headers = modify_string(afile_qseqids)
     print('input is modified')
     species = get_species(headers)
-    df = search_pkl_df(species)
+    df = search_pkl_df(species, directory)
     print('accession numbers and e-values are retrieved')
     #
     df = remove_duplicate_accession(df)
