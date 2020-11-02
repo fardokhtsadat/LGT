@@ -122,15 +122,15 @@ def find_name(list_of_names, Glob, df):
     for i in Glob:
         acc_taxonomy[i] = Glob[i].split(';')
     all_names_df = pd.DataFrame()
-    for name in list_of_names:
-        print(name)
+    for species in list_of_names:
         temp_list = []
         for j in acc_taxonomy:
-            if name in acc_taxonomy[j]:
+            if species in acc_taxonomy[j]:
                 temp_list.append(j)
         temp = df[df.sseqid.isin(temp_list)]
-        #temp['name'] = name
-        temp.loc[:, 'name'] = name
+        #temp['name'] = species
+        #temp.loc[:, 'name'] = name
+        df.assign(name= species)
         all_names_df = all_names_df.append(temp)
     return all_names_df
 
