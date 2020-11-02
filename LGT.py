@@ -130,7 +130,7 @@ def find_name(list_of_names, Glob, df):
         temp = df[df.sseqid.isin(temp_list)]
         #temp['name'] = species
         #temp.loc[:, 'name'] = name
-        temp.assign(name = species)
+        temp = temp.assign(name = species)
         all_names_df = all_names_df.append(temp)
     return all_names_df
 
