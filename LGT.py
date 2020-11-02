@@ -157,6 +157,7 @@ def sort_and_select(df):
         
         
 def wrapper(afile_qseqids, list_of_names):
+    db_password = input("Enter the password to EUK_PROK_DB database: ")
     headers = modify_string(afile_qseqids)
     print('input is modified')
     species = get_species(headers)
@@ -171,7 +172,6 @@ def wrapper(afile_qseqids, list_of_names):
     accessions = list(df['sseqid'])
     chunks = [accessions[i:i + 15000] for i in range(0, len(accessions), 15000)]
     #
-    db_password = input("Enter the password to the database EUK_PROK_DB:")
     res = []
     for i in chunks:
         res.append(get_taxid_taxonomy(i, db_password))
@@ -182,6 +182,6 @@ def wrapper(afile_qseqids, list_of_names):
     print('taxid and taxonomy is obtained')
     df1 = assign_taxid_taxonomy(df, Glob)
     df2 = find_name(list_of_names, Glob, df1)
-    print('searching for names ...')
+    print('searching for species ...')
     sort_and_select(df2)
     print('a csv file with candidate accession numbers is created')
