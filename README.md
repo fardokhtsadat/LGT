@@ -31,9 +31,9 @@ You can import **LGT** using:
 ```python
 from LGT import *
 ```
-After importing **LGT**, you can call the *wrapper()* function. *wrapper()* receives three arguments; the first argument is the orthogroup file,  the second argument is the list of species, and the third being the password to the database. The output of **LGT** is a csv file containg the suggested condidate accession numbers for each species. An example is shown below:
+After importing **LGT**, you can call the *wrapper()* function. *wrapper()* receives four arguments; the first argument is the orthogroup file, the second argument is the list of species, the third is the path to the directory of the pickled data frames , and the last is the password to the database. The output of **LGT** is a csv file containg the suggested condidate accession numbers for each species. An example is shown below:
 ```python
-wrapper('/path/to/file/afile', ['Fungi', 'Metazoa'], 'password')
+wrapper('/path/to/file/afile', ['Fungi', 'Metazoa'], '/path/to/pickled_dfs', 'password')
 ```
 ### Attention
 Please set your working directory to the directory of LGT. You can use the following command to set the working directory:
