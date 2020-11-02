@@ -29,37 +29,17 @@ def modify_string(x):
             content[i] = content[i]
     return content
 
-# First, search_pkl_df() uses the result from modify_string(x) and groups the headers based on the species they belong to.
-# this makes the searching of related qseqids in the pickled data frames faster and more efficient since pickled data frame for the same species are not opened
-# and closed constantly. Next, search_pkl_df(x) searches for the qseqids in the pickled data frames and create a csv file.
-def get_species(x):
-    species_list = ['BOT', 'CONGO', 'DAR', 'GYROMONAS', 'Hexamita', 'IT1', 'MACHU_PICCU', 'MIS2C', 'PIG', 'SOOS4','TRIMITUS', 'VLADA7', 'ERAWAN']
-    species = {'BOT': [], 'CONGO': [], 'DAR': [], 'GYROMONAS': [], 'Hexamita': [], 'IT1': [], 'MACHU_PICCU': [],'MIS2C': [], 'PIG': [], 'SOOS4': [], 'TRIMITUS': [], 'VLADA7': [], 'ERAWAN': []}
-    for i in range(len(x)):
-        if x[i].split('_')[0] in species_list:
-            element = x[i].split('_')[0]
-            species.setdefault(element, [])
-            species[element].append(x[i])
-        species = {k: v for k, v in species.items() if v}
-    for j in species:
-        species[j] = list(set(species[j]))
-    return species
-
-
 #the following function retrives info from pickle dataframe for an orthogroup, this function is called from main_search_pkl_df
-def search_pkl_df(x, directory):
+def search_pkl_df(list_of_qseqids, pickled_df):
     alist = []
-    for i in x:
-        #pickle_df = '/home/users/LGT_diplo/EUK_pickled_df/%s_EUK_df.pkl' % (i)
-        pickle_df = '%s/%s_EUK_df.pkl' % (directory,i)
-        df = pd.read_pickle(pickle_df) #read in df
-        local_df = pd.DataFrame() #an empty df
-        local_df['qseqid'] = x[i] #local_df is equal to the values of the key 'i'
-        alist.append(local_df.merge(df, left_on='qseqid', right_on='qseqid'))
+    df = pd.read_pickle(pickled_df) #read in df
+    local_df = pd.DataFrame() #an empty df
+    local_df['qseqid'] = list_of_qseqids #local_df is equal to the values of the key 'i'
+    alist.append(local_df.merge(df, left_on='qseqid', right_on='qseqid'))
     merged_df = pd.DataFrame()
     for j in alist:  # the for-loop merges the results retrieved from multiple processors
         merged_df = merged_df.append(j, ignore_index=True)
-    merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0])
+    merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0]) #remove version numbers from accession numbers
     return merged_df
 
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
@@ -161,12 +141,12 @@ def wrapper(afile_qseqids, list_of_names, directory, db_password):
     #db_password = input("Enter the password to EUK_PROK_DB database: ")
     headers = modify_string(afile_qseqids)
     print('input is modified')
-    species = get_species(headers)
-    df = search_pkl_df(species, directory)
+    #species = get_species(headers)
+    df = search_pkl_df(headers, directory)
     print('accession numbers and e-values are retrieved')
     #
-    df = remove_duplicate_accession(df)
-    print('duplicated accession numbers are removed')
+    #df = remove_duplicate_accession(df)
+    #print('duplicated accession numbers are removed')
     df = get_hitproportion_meaneval(df)
     #
     print('hit proportions and average e-values are caluclated')
