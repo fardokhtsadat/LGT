@@ -24,3 +24,5 @@ Species_names = Metazoa, Fungi, Eukaryotes
 Number_of_top_hits: 3
 Number_of_random_hits: 2
 DB_password = pass12345
+
+
