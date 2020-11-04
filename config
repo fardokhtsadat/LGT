@@ -1,0 +1,26 @@
+##example config file
+
+[create_pkl_df]
+Create_df = yes
+Working_directory = /Users/fardokht/Desktop/
+Data_directory = /Users/fardokht/Desktop/, /Users/fardokht/Desktop/, /Users/fardokht/Desktop/
+File_name_ending = euk.blast, euk.blast, euk.blast
+
+
+[append_existing_pkl_df]
+Append = yes
+Working_directory = /Users/fardokht/Desktop/
+Path_to_pkl_df = /Users/fardokht/Desktop/
+Data_directory = /Users/fardokht/Desktop/
+File_name_ending = euk.blast
+
+
+[data_selection]
+Data_selection = yes
+Working_directory = /Users/fardokht/Desktop/
+Path_to_pkl_df = /Users/fardokht/Desktop/
+Path_to_input_file = /Users/fardokht/Desktop/
+Species_names = Metazoa, Fungi, Eukaryotes
+Number_of_top_hits: 3
+Number_of_random_hits: 2
+DB_password = pas12345
