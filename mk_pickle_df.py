@@ -6,7 +6,7 @@ from multiprocessing import Pool
 
 def extract_data(directory):
     all_files = []
-    for file in glob.glob(directory):
+    for file in glob.glob(directory): #for all files in the directory
         all_files.append(file)
     full_blast_files = []
     for j in all_files:
