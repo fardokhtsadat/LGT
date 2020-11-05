@@ -29,7 +29,7 @@ if config['data_selection']['Data_selection'] == 'yes':
 if __name__ == "__main__":
     if config['create_pkl_df']['Create_df'] == 'yes':
         os.chdir(wd)
-        from create_pkl_df import *
+        from mk_pickle_df import *
         extract_data_main(num_cpu, data_path, output_name)
     
 
