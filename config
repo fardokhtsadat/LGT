@@ -4,7 +4,7 @@
 Create_df = yes
 Working_directory = /Users/
 Data_directory = /Users/, /Users/, /Users/
-File_name_ending = euk.blast, euk.blast, euk.blast
+Pkl_df_name = test_pkl.pkl
 
 
 [append_existing_pkl_df]
