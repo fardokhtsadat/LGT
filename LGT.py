@@ -115,7 +115,7 @@ def find_name(list_of_names, Glob, df):
         all_names_df = all_names_df.append(temp)
     return all_names_df
 
-def sort_and_select(df):
+def sort_and_select(df, output_name):
     df = df.sort_values(['occurrence', 'mean_eval'], ascending=[False, True])
     # best 3 elements for each taxon id
     top_df = df.groupby('name').head(3) #we get the top 3
@@ -134,15 +134,13 @@ def sort_and_select(df):
             selected_random = selected_random.append(random[random['name'] == i].sample(n=1, replace=False))
         acc_removed = list(selected_random['sseqid'])
         random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
-        top_df.append(selected_random).to_csv('candidate_accession_numbers.csv')
+        top_df.append(selected_random).to_csv(output_name)
         
-        
-def wrapper(afile_qseqids, list_of_names, directory, db_password):
-    #db_password = input("Enter the password to EUK_PROK_DB database: ")
-    headers = modify_string(afile_qseqids)
+def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, output_name):
+    headers = modify_string(orthogroup)
     print('input is modified')
     #species = get_species(headers)
-    df = search_pkl_df(headers, directory)
+    df = search_pkl_df(headers, pkl_df_path)
     print('accession numbers and e-values are retrieved')
     #
     #df = remove_duplicate_accession(df)
@@ -163,6 +161,7 @@ def wrapper(afile_qseqids, list_of_names, directory, db_password):
     print('taxid and taxonomy is obtained')
     df1 = assign_taxid_taxonomy(df, Glob)
     df2 = find_name(list_of_names, Glob, df1)
-    print('searching for species ...')
-    sort_and_select(df2)
+    print('searching for user-defined species ...')
+    sort_and_select(df2, output_name)
     print('a csv file with candidate accession numbers is created')
+
