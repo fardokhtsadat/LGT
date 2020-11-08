@@ -1,29 +1,27 @@
 ##example config file
 
 [create_pkl_df]
-Create_df = yes
-Working_directory = /Users/ #where the scripts are
-Data_directory = /Users/, /Users/, /Users/ #data to create pkl df from
-Pkl_df_path_and_name = test_pkl.pkl # name of the output
+Create_df = no
+Working_directory = /path/to/LGT_diplo
+Data_directory = /path/to/*EUK.blastp,/path/to/*EUK.blastp
+Pkl_df_path_and_name = /path/to/BOT_CONGO.pkl
 Number_of_cpus = 15
 
-
 [append_existing_pkl_df]
-Append = yes
-Working_directory = /Users/
-Path_to_pkl_df = /Users/
-Data_directory = /Users/
-File_name_ending = euk.blast
-
+Append = no
+Working_directory = /path/to/
+Path_to_pkl_df = /path/to/
+Data_directory = /path/to/
 
 [data_selection]
 Data_selection = yes
-Working_directory = /Users/
-Path_to_pkl_df = /Users/
-Path_to_input_file = /Users/
-Species_names = Metazoa, Fungi, Eukaryotes
-Number_of_top_hits: 3
-Number_of_random_hits: 2
-DB_password = pass12345
+Working_directory = /path/to/
+Path_to_pkl_df = /path/to/name.pkl
+Path_to_input_file = /path/to/input_file
+Species_names = Metazoa,Fungi
+#Number_of_top_hits: 3
+#Number_of_random_hits: 2
+DB_password = password
+Output_path_name = /path/to/output_candidate.csv
 
 
