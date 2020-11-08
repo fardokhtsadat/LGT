@@ -23,11 +23,13 @@ if config['append_existing_pkl_df']['Append'] == 'yes':
 if config['data_selection']['Data_selection'] == 'yes':
     wd = config['data_selection']['Working_directory']
     pkl_df_path = config['data_selection']['Path_to_pkl_df']
-    path_input_fasta = config['data_selection']['Path_to_input_file']
-    species_names = config['data_selection']['Species_names'].split(',')
-    number_of_top_hits = int(config['data_selection']['Number_of_top_hits'])
-    number_of_random_hits = int(config['data_selection']['Number_of_random_hits'])
+    orthogroup = config['data_selection']['Path_to_input_file']
+    list_of_names = config['data_selection']['Species_names'].split(',')
+    #number_of_top_hits = int(config['data_selection']['Number_of_top_hits'])
+    #number_of_random_hits = int(config['data_selection']['Number_of_random_hits'])
     db_password = config['data_selection']['DB_password']
+    output_name = config['data_selection']['Output_path_name'] #it has to be csv
+    
 
 
 
