@@ -2,9 +2,10 @@
 
 [create_pkl_df]
 Create_df = yes
-Working_directory = /Users/
-Data_directory = /Users/, /Users/, /Users/
-Pkl_df_name = test_pkl.pkl
+Working_directory = /Users/ #where the scripts are
+Data_directory = /Users/, /Users/, /Users/ #data to create pkl df from
+Pkl_df_path_and_name = test_pkl.pkl # name of the output
+Number_of_cpus = 15
 
 
 [append_existing_pkl_df]
