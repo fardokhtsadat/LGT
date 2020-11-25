@@ -5,21 +5,13 @@ config.read_file(open('/home/users/LGT_diplo/config'))
 
 if config['create_pkl_df']['Create_df'] == 'yes':
     wd = config['create_pkl_df']['Working_directory'] #the directory the python scripts are
-    print(wd)
     data_path = config['create_pkl_df']['Data_directory'].split(',')
-    print(data_path)
     output_name = config['create_pkl_df']['Pkl_df_path_and_name']
-    print(output_name)
     num_cpu = int(config['create_pkl_df']['Number_of_cpus'])
-    print(num_cpu)
     #
     os.chdir(wd)
     from create_pkl_df import *
-    print('pkg is imported')
-    print('calling the fnc ... ')
     extract_data_main(num_cpu, data_path, output_name)
-    print('done!')
-
 
 if config['append_existing_pkl_df']['Append'] == 'yes':
     wd = config['append_existing_pkl_df']['Working_directory']
