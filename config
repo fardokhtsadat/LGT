@@ -1,28 +1,29 @@
 ##example config file
 
+##example config file
+  
 [create_pkl_df]
 Create_df = no
-Working_directory = /path/to/LGT_diplo
-Data_directory = /path/to/*EUK.blastp,/path/to/*EUK.blastp
-Pkl_df_path_and_name = /path/to/BOT_CONGO.pkl
+Working_directory = /home/users/LGT_diplo
+Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/*EUK.blastp,/home/users/LGT_diplo/blast_results_ALL/CONGO/*EUK.blastp
+Pkl_df_path_and_name = /home/users/LGT_diplo/BOT_CONGO.pkl
 Number_of_cpus = 15
 
 [append_existing_pkl_df]
-Append = no
-Working_directory = /Users/
-Path_to_pkl_df = /Users/
-Data_directory = /Users/file.blast
-
+Append = yes
+Working_directory = /home/users/LGT_diplo
+Path_to_pkl_df = /home/users/LGT_diplo/sim1.pkl
+Data_directory = /home/users/LGT_diplo/sim2.blast
+Columns = 0,1
 
 [data_selection]
-Data_selection = yes
-Working_directory = /path/to/
-Path_to_pkl_df = /path/to/name.pkl
-Path_to_input_file = /path/to/input_file
+Data_selection = no
+Working_directory = /home/users/LGT_diplo/
+Path_to_pkl_df = /home/users/LGT_diplo/all_species.pkl
+Path_to_input_file = /home/users/LGT_diplo/headers_OG0000000
 Species_names = Metazoa,Fungi
-#Number_of_top_hits: 3
-#Number_of_random_hits: 2
+Number_of_top_hits: 3
+Number_of_random_hits: 2
 DB_password = password
-Output_path_name = /path/to/output_candidate.csv
-
+Output_path_name = /home/users/LGT_diplo/test_candidate.csv
 
