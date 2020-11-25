@@ -1,9 +1,17 @@
 ##example config file
 ## the config file consists of three sections: 1.create_pkl_df 2.append_existing_pkl_df 3.data_selection
+
 ## in the 'create_pkl_df' section, by specifing the parameters, you can create a new pickled dataframe from your blast results.
+### to create a new pickled dataframe set 'Create_df = yes'.
+### 'Working_directory' is the directory to LGT file containg all the scripts
+### 'Data_directory' is the path to your blast results. you can choose mutiple paths separated by ','. 
+### 'Columns' refers to the number of columns in the blast files that contain the qseqid, sseqid, and the evalue respectively.
+### 'Pkl_df_path_and_name' is the directory and the name of the final pickle dataframe
+### 'Number_of_cpus' is the count of total cpus. the process of creating a pickle dataframe can be sped up by using more cpus. we suggest choosing as many cpus as the 'Data_directory'
+
 
 [create_pkl_df]
-Create_df = yes
+Create_df = no
 Working_directory = /home/users/LGT_diplo
 Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/BOT_ay_js_PROK.blastp,/home/users/LGT_diplo/blast_results_ALL/BOT/BOT_ae_rd_EUK.blastp
 Columns = 0,1,11
