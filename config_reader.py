@@ -6,6 +6,7 @@ config.read_file(open('/home/users/LGT_diplo/config'))
 if config['create_pkl_df']['Create_df'] == 'yes':
     wd = config['create_pkl_df']['Working_directory'] #the directory the python scripts are
     data_path = config['create_pkl_df']['Data_directory'].split(',')
+    columns = [int(i) for i in config['create_pkl_df']['Columns'].split(',')]
     output_name = config['create_pkl_df']['Pkl_df_path_and_name']
     num_cpu = int(config['create_pkl_df']['Number_of_cpus'])
     #
