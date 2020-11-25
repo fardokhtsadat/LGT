@@ -2,13 +2,12 @@
 ## the config file consists of three sections: 1.create_pkl_df 2.append_existing_pkl_df 3.data_selection
 
 ## in the 'create_pkl_df' section, by specifing the parameters, you can create a new pickled dataframe from your blast results.
-### to create a new pickled dataframe set 'Create_df = yes'.
-### 'Working_directory' is the directory to LGT file containg all the scripts
+### to create a new pickled dataframe set 'Create_df' = yes.
+### 'Working_directory' is the directory to LGT file containg all the scripts.
 ### 'Data_directory' is the path to your blast results. you can choose mutiple paths separated by ','. 
 ### 'Columns' refers to the number of columns in the blast files that contain the qseqid, sseqid, and the evalue respectively.
-### 'Pkl_df_path_and_name' is the directory and the name of the final pickle dataframe
-### 'Number_of_cpus' is the count of total cpus. the process of creating a pickle dataframe can be sped up by using more cpus. we suggest choosing as many cpus as the number of 'Data_directory'
-
+### 'Pkl_df_path_and_name' is the directory and the name of the final pickle dataframe.
+### 'Number_of_cpus' is the count of total cpus. the process of creating a pickle dataframe can be sped up by using more cpus. we suggest choosing as many cpus as the number of 'Data_directory'.
 
 [create_pkl_df]
 Create_df = no
@@ -18,12 +17,30 @@ Columns = 0,1,11
 Pkl_df_path_and_name = /home/users/LGT_diplo/BOT_two.pkl
 Number_of_cpus = 3
 
+## in the 'append_existing_pkl_df' section, you can add new blast results to an existing pickle dataframe.
+### to append set 'Append' = yes.
+### 'Working_directory' is the directory to LGT file containg all the scripts
+### 'Path_to_pkl_df is the path of the existing dataframe
+### 'Data_directory' is the path to the blast files
+### Columns' refers to the number of columns in the blast files that contain the qseqid, sseqid, and the evalue respectively.
+
 [append_existing_pkl_df]
 Append = no
 Working_directory = /home/users/LGT_diplo
 Path_to_pkl_df = /home/users/LGT_diplo/sim1.pkl
 Data_directory = /home/users/LGT_diplo/sim2.blast
 Columns = 0,1
+
+## in the 'data_selection' section, you can search the pickled dataframe for a user_defined orthogroup and a set of species.
+### to start the data selection, set 'Data_selection' = yes,
+### 'Working_directory' is the directory to LGT file containg all the scripts.
+### 'Path_to_pkl_df' is the path of the existing dataframe
+### 'Path_to_input_file' is the path to an orthogroup file
+### 'Species_names' are the user_defined species. The names should be separated by ','. The names should be written based on how the sepcies' names are written on the taxonomy browser in ncbi.
+### 'Number_of_top_hits' is the count of the best hits for each of the species.
+### 'Number_of_random_hits' is the count of the random hits for each of the species.
+### 'DB_password' is the password for the taxonomy mysql db.
+### 'Output_path_name' is the path to the final output. the output contains multiple columns: 'candidate accession number', 'hit proportion', 'average evalue', and 'species name'.
 
 [data_selection]
 Data_selection = no
