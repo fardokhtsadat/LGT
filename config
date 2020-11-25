@@ -8,6 +8,7 @@
 Create_df = no
 Working_directory = /home/users/LGT_diplo
 Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/*EUK.blastp,/home/users/LGT_diplo/blast_results_ALL/CONGO/*EUK.blastp
+Columns =
 Pkl_df_path_and_name = /home/users/LGT_diplo/BOT_CONGO.pkl
 Number_of_cpus = 15
 
