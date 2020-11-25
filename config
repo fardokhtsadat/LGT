@@ -7,7 +7,7 @@
 ### 'Data_directory' is the path to your blast results. you can choose mutiple paths separated by ','. 
 ### 'Columns' refers to the number of columns in the blast files that contain the qseqid, sseqid, and the evalue respectively.
 ### 'Pkl_df_path_and_name' is the directory and the name of the final pickle dataframe
-### 'Number_of_cpus' is the count of total cpus. the process of creating a pickle dataframe can be sped up by using more cpus. we suggest choosing as many cpus as the 'Data_directory'
+### 'Number_of_cpus' is the count of total cpus. the process of creating a pickle dataframe can be sped up by using more cpus. we suggest choosing as many cpus as the number of 'Data_directory'
 
 
 [create_pkl_df]
