@@ -2,18 +2,16 @@
 ## the config file consists of three sections: 1.create_pkl_df 2.append_existing_pkl_df 3.data_selection
 ## in the 'create_pkl_df' section, by specifing the parameters, you can create a new pickled dataframe from your blast results.
 
-
-
 [create_pkl_df]
-Create_df = no
+Create_df = yes
 Working_directory = /home/users/LGT_diplo
-Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/*EUK.blastp,/home/users/LGT_diplo/blast_results_ALL/CONGO/*EUK.blastp
-Columns =
-Pkl_df_path_and_name = /home/users/LGT_diplo/BOT_CONGO.pkl
-Number_of_cpus = 15
+Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/BOT_ay_js_PROK.blastp,/home/users/LGT_diplo/blast_results_ALL/BOT/BOT_ae_rd_EUK.blastp
+Columns = 0,1,11
+Pkl_df_path_and_name = /home/users/LGT_diplo/BOT_two.pkl
+Number_of_cpus = 3
 
 [append_existing_pkl_df]
-Append = yes
+Append = no
 Working_directory = /home/users/LGT_diplo
 Path_to_pkl_df = /home/users/LGT_diplo/sim1.pkl
 Data_directory = /home/users/LGT_diplo/sim2.blast
@@ -29,4 +27,3 @@ Number_of_top_hits: 3
 Number_of_random_hits: 2
 DB_password = password
 Output_path_name = /home/users/LGT_diplo/test_candidate.csv
-
