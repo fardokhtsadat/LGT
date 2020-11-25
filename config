@@ -40,7 +40,7 @@ Columns = 0,1
 ### 'Number_of_top_hits' is the count of the best hits for each of the species.
 ### 'Number_of_random_hits' is the count of the random hits for each of the species.
 ### 'DB_password' is the password for the taxonomy mysql db.
-### 'Output_path_name' is the path to the final output. the output contains multiple columns: 'candidate accession number', 'hit proportion', 'average evalue', and 'species name'.
+### 'Output_path_name' is the path to the final output. the output contains multiple columns: 'sseqid', 'occurrence', 'mean_eval', 'taxonomy,name'
 
 [data_selection]
 Data_selection = no
