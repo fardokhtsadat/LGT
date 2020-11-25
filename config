@@ -9,9 +9,10 @@ Number_of_cpus = 15
 
 [append_existing_pkl_df]
 Append = no
-Working_directory = /path/to/
-Path_to_pkl_df = /path/to/
-Data_directory = /path/to/
+Working_directory = /Users/
+Path_to_pkl_df = /Users/
+Data_directory = /Users/file.blast
+
 
 [data_selection]
 Data_selection = yes
