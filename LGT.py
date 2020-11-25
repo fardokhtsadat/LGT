@@ -162,6 +162,6 @@ def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits
     df1 = assign_taxid_taxonomy(df, Glob)
     df2 = find_name(list_of_names, Glob, df1)
     print('searching for user-defined species ...')
-    sort_and_select(df2, num_of_top_hits, num_of_rand_hits, output_name)
+    sort_and_select(df2, output_name, num_of_top_hits, num_of_rand_hits)
     print('a csv file with candidate accession numbers is created')
 
