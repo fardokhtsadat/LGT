@@ -29,7 +29,7 @@ git clone https://github.com/fardokhtsadat/LGT.git
 ## Usage
 First specify your parameters in the config file. To call the proper function based in the user-defined parameters, use the following:
 ```
-python3 config_reader.py config
+python3 config_reader.py 
 ```
 
 
