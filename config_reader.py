@@ -41,6 +41,7 @@ if config['data_selection']['Data_selection'] == 'yes':
     output_name = config['data_selection']['Output_path_name']
     os.chdir(wd)
     from LGT import *
-    print('pkg is imported')
     wrapper(orthogroup, list_of_names, pkl_df_path, db_password, number_of_top_hits, number_of_random_hits, output_name)
+    
+    
 
