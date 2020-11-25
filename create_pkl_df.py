@@ -4,7 +4,7 @@
 import pandas as pd, pickle, glob, os, multiprocessing
 from multiprocessing import Pool
 
-def extract_data(directory):
+def extract_data(directory, cols):
     all_files = []
     for file in glob.glob(directory):
         all_files.append(file)
@@ -17,14 +17,10 @@ def extract_data(directory):
     evalue_all = []
     for z in full_blast_files:
         df = pd.read_table(z, header=None)
-        colnames = list(range(1, len(df.columns) + 1))
-        colnames = [str(h) for h in colnames]
-        colnames = ['col' + s for s in colnames]
-        # name column
-        df.columns = colnames
-        qseqid_all.extend(list(df['col1']))
-        sseqid_all.extend(list(df['col3']))
-        evalue_all.extend(list(df['col12']))
+        # select columns
+        qseqid_all.extend(list(df.iloc[:,cols[0]]))
+        sseqid_all.extend(list(df.iloc[:,cols[1]]))
+        evalue_all.extend(list(df.iloc[:,cols[2]]))
     final_df = pd.DataFrame({'qseqid': qseqid_all,
                              'sseqid': sseqid_all,
                              'evalue': evalue_all})
@@ -35,7 +31,7 @@ def extract_data(directory):
 def extract_data_main(num_cpu, list_of_dir, output_file_name):
     with Pool(num_cpu) as p:
         res = p.map(extract_data, list_of_dir)
-    merged_df = pd.DataFrame()  
+    merged_df = pd.DataFrame()
     for i in res:
         merged_df = pd.concat([i, merged_df], ignore_index=True)
     merged_df.to_pickle(output_file_name)
@@ -43,4 +39,4 @@ def extract_data_main(num_cpu, list_of_dir, output_file_name):
     print('The pickled dataframe is created and can be found in %s.' % head)
     print('The total number of rows in your pickled dataframe is %i.' % len(merged_df.index))
 
-    
+
