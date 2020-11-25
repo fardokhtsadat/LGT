@@ -12,7 +12,11 @@ if config['create_pkl_df']['Create_df'] == 'yes':
     #
     os.chdir(wd)
     from create_pkl_df import *
-    extract_data_main(num_cpu, data_path, output_name)
+    print('pkg is imported')
+    print('calling the fnc ... ')
+    extract_data_main(num_cpu, data_path, output_name, columns)
+    print('done!')
+
 
 if config['append_existing_pkl_df']['Append'] == 'yes':
     wd = config['append_existing_pkl_df']['Working_directory']
@@ -21,6 +25,7 @@ if config['append_existing_pkl_df']['Append'] == 'yes':
     columns = [int(i) for i in config['append_existing_pkl_df']['Columns'].split(',')]
     os.chdir(wd)
     from append_df import *
+    print('pkg is imported')
     append_pkl_df(pkl_df_path, data_path , columns)
 
 if config['data_selection']['Data_selection'] == 'yes':
@@ -34,7 +39,7 @@ if config['data_selection']['Data_selection'] == 'yes':
     output_name = config['data_selection']['Output_path_name']
     os.chdir(wd)
     from LGT import *
+    print('pkg is imported')
     wrapper(orthogroup, list_of_names, pkl_df_path, db_password, number_of_top_hits, number_of_random_hits, output_name)
-    
-    
+
 
