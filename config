@@ -11,10 +11,10 @@
 
 [create_pkl_df]
 Create_df = no
-Working_directory = /home/users/LGT_diplo
-Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/BOT_ay_js_PROK.blastp,/home/users/LGT_diplo/blast_results_ALL/BOT/BOT_ae_rd_EUK.blastp
+Working_directory = /home/users/wd
+Data_directory = /home/users/file1.blastp,/home/users/file2.blastp
 Columns = 0,1,11
-Pkl_df_path_and_name = /home/users/LGT_diplo/BOT_two.pkl
+Pkl_df_path_and_name = /home/users/pickle_df.pkl
 Number_of_cpus = 3
 
 ## in the 'append_existing_pkl_df' section, you can add new blast results to an existing pickle dataframe.
@@ -26,9 +26,9 @@ Number_of_cpus = 3
 
 [append_existing_pkl_df]
 Append = no
-Working_directory = /home/users/LGT_diplo
-Path_to_pkl_df = /home/users/LGT_diplo/sim1.pkl
-Data_directory = /home/users/LGT_diplo/sim2.blast
+Working_directory = /home/users/wd
+Path_to_pkl_df = /home/users/pickle_df.pkl
+Data_directory = /home/users/file1.blastp,/home/users/file2.blastp
 Columns = 0,1
 
 ## in the 'data_selection' section, you can search the pickled dataframe for a user_defined orthogroup and a set of species.
@@ -44,11 +44,11 @@ Columns = 0,1
 
 [data_selection]
 Data_selection = no
-Working_directory = /home/users/LGT_diplo/
-Path_to_pkl_df = /home/users/LGT_diplo/all_species.pkl
-Path_to_input_file = /home/users/LGT_diplo/headers_OG0000000
+Working_directory = /home/users/wd
+Path_to_pkl_df = /home/users/pickle_df.pkl
+Path_to_input_file = /home/users/input_file
 Species_names = Metazoa,Fungi
 Number_of_top_hits: 3
 Number_of_random_hits: 2
 DB_password = password
-Output_path_name = /home/users/LGT_diplo/test_candidate.csv
+Output_path_name = /home/users/output_file.csv
