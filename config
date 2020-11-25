@@ -1,7 +1,9 @@
 ##example config file
+## the config file consists of three sections: 1.create_pkl_df 2.append_existing_pkl_df 3.data_selection
+## in the 'create_pkl_df' section, by specifing the parameters, you can create a new pickled dataframe from your blast results.
 
-##example config file
-  
+
+
 [create_pkl_df]
 Create_df = no
 Working_directory = /home/users/LGT_diplo
