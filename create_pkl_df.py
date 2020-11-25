@@ -3,6 +3,7 @@
 
 import pandas as pd, pickle, glob, os, multiprocessing
 from multiprocessing import Pool
+import functools
 
 def extract_data(directory, cols):
     all_files = []
@@ -28,9 +29,9 @@ def extract_data(directory, cols):
     return final_df
 
 
-def extract_data_main(num_cpu, list_of_dir, output_file_name):
+def extract_data_main(num_cpu, list_of_dir, output_file_name, columns):
     with Pool(num_cpu) as p:
-        res = p.map(extract_data, list_of_dir)
+        res = p.map(functools.partial(extract_data, cols = columns), list_of_dir)
     merged_df = pd.DataFrame()
     for i in res:
         merged_df = pd.concat([i, merged_df], ignore_index=True)
