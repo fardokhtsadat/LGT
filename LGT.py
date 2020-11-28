@@ -149,8 +149,8 @@ def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits
         print('df is empty')
         continue
     #
-    #df = remove_duplicate_accession(df)
-    #print('duplicated accession numbers are removed')
+    df = remove_duplicate_accession(df)
+    print('duplicated accession numbers are removed')
     df = get_hitproportion_meaneval(df)
     #
     print('hit proportions and average e-values are caluclated')
