@@ -1,7 +1,7 @@
 import configparser, os
   
 config = configparser.ConfigParser()
-config.read_file(open('/home/users/LGT_diplo/config'))
+config.read_file(open('config'))
 
 if config['create_pkl_df']['Create_df'] == 'yes':
     wd = config['create_pkl_df']['Working_directory'] #the directory the python scripts are
