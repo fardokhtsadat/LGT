@@ -4,6 +4,7 @@ import numpy as np
 from math import nan
 import glob
 import mysql.connector
+import sys 
 
 # parse_fasta_headers() parses the headers from a fasta file and stores it in a file. parse_fasta_headers() gets the directory of a fasta file as input and creates
 # a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
@@ -37,7 +38,7 @@ def search_pkl_df(list_of_qseqids, pickled_df):
     local_df['qseqid'] = list_of_qseqids #local_df is equal to the values of the key 'i'
     alist.append(local_df.merge(df, left_on='qseqid', right_on='qseqid'))
     merged_df = pd.DataFrame()
-    for j in alist:  # the for-loop merges the results retrieved from multiple processors
+    for j in alist:  
         merged_df = merged_df.append(j, ignore_index=True)
     merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0]) #remove version numbers from accession numbers
     return merged_df
@@ -142,6 +143,9 @@ def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits
     #species = get_species(headers)
     df = search_pkl_df(headers, pkl_df_path)
     print('accession numbers and e-values are retrieved')
+    if df.empty:
+        print('df is empty')
+        sys.exit()
     #
     #df = remove_duplicate_accession(df)
     #print('duplicated accession numbers are removed')
