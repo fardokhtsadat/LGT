@@ -5,11 +5,15 @@ config.read_file(open('config'))
 
 if config['create_pkl_df']['Create_df'] == 'yes':
     wd = config['create_pkl_df']['Working_directory'] #the directory the python scripts are
+    print('Your working directory is set to %s' %(wd))
     data_path = config['create_pkl_df']['Data_directory'].split(',')
-    print(data_path)
+    print('Blast files are: %s' %(data_path))
     columns = [int(i) for i in config['create_pkl_df']['Columns'].split(',')]
+    print('Targeted columns in the blast files are: %s' %(columns))
     output_name = config['create_pkl_df']['Pkl_df_path_and_name']
+    print('Output name: %s' %(output_name))
     num_cpu = int(config['create_pkl_df']['Number_of_cpus'])
+    print('Number of cpus: %s' %(num_cpu))
     #
     os.chdir(wd)
     from create_pkl_df import *
