@@ -116,7 +116,7 @@ def find_name(list_of_names, Glob, df):
         all_names_df = all_names_df.append(temp)
     return all_names_df
 
-def sort_and_select(df, output_name, num_of_top_hits, num_of_rand_hits):
+def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_hits):
     df = df.sort_values(['occurrence', 'mean_eval'], ascending=[False, True])
     # best 3 elements for each taxon id
     top_df = df.groupby('name').head(num_of_top_hits) #we get the top 3
@@ -135,9 +135,11 @@ def sort_and_select(df, output_name, num_of_top_hits, num_of_rand_hits):
             selected_random = selected_random.append(random[random['name'] == i].sample(n=len(random[random['name'] == i]), replace=False))
         #acc_removed = list(selected_random['sseqid'])
         #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
-    top_df.append(selected_random).to_csv(output_name)
+    ortho_name = os.path.basename(output_name)
+    output_file_name = output_file_dir + 'LGT_' +ortho_name 
+    top_df.append(selected_random).to_csv(output_file_name)
         
-def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits, num_of_rand_hits, output_name):
+def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
     headers = modify_string(orthogroup)
     print('input is modified')
     #species = get_species(headers)
@@ -166,6 +168,6 @@ def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits
     df1 = assign_taxid_taxonomy(df, Glob)
     df2 = find_name(list_of_names, Glob, df1)
     print('searching for user-defined species ...')
-    sort_and_select(df2, output_name, num_of_top_hits, num_of_rand_hits)
+    sort_and_select(df2, element, output_file_dir, num_of_top_hits, num_of_rand_hits)
     print('a csv file with candidate accession numbers is created')
 
