@@ -79,18 +79,26 @@ def remove_version_number(alist):
 # get_taxid_taxonomy() gets a list of accession numbers and it retrieves the taxon ids for each accession number.
 # the output of this function is a dictionary with keys being the accession number and the values being a tuple of taxon id and taxonomy.
 def get_taxid_taxonomy(x, db_password):
-    x = tuple(x)
     mydb = mysql.connector.connect(
         host="mole",
         user="fardokht",
         password=db_password,
         database="EUK_PROK_DB")
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
-    myresult = mycursor.fetchall()
-    acc_taxid = {taxid[0]: taxid[1] for taxid in myresult}
-    mycursor.close()
-    mydb.close()
+    mycursor = mydb.cursor(buffered=True)
+    if len(x) > 1:
+        x = tuple(x)
+        mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession IN %s;" %(x,))
+        myresult = mycursor.fetchall()
+        acc_taxid = {taxid[0]: taxid[1] for taxid in myresult}
+        mycursor.close()
+        mydb.close()
+    else:
+        x = x[0]
+        mycursor.execute("SELECT accession, taxonomy FROM accession_taxid_taxonomy WHERE accession = '%s';"  %(x))
+        myresult = mycursor.fetchall()
+        acc_taxid = {taxid[0]: taxid[1] for taxid in myresult}
+        mycursor.close()
+        mydb.close()
     return acc_taxid
 
 #######
