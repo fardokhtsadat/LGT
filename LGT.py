@@ -4,7 +4,6 @@ import numpy as np
 from math import nan
 import glob
 import mysql.connector
-import sys 
 
 # parse_fasta_headers() parses the headers from a fasta file and stores it in a file. parse_fasta_headers() gets the directory of a fasta file as input and creates
 # a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
