@@ -136,7 +136,8 @@ def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_h
         #acc_removed = list(selected_random['sseqid'])
         #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
     ortho_name = os.path.basename(output_name)
-    output_file_name = output_file_dir + 'LGT_' +ortho_name 
+    ortho_name = ortho_name.split('_')[1]
+    output_file_name = output_file_dir + 'LGT_' + ortho_name 
     top_df.append(selected_random).to_csv(output_file_name)
         
 def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
@@ -147,7 +148,7 @@ def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits
     print('accession numbers and e-values are retrieved')
     if df.empty:
         print('df is empty')
-        sys.exit()
+        continue
     #
     #df = remove_duplicate_accession(df)
     #print('duplicated accession numbers are removed')
