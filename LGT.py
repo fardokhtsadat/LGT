@@ -54,11 +54,14 @@ def get_hitproportion_meaneval(df):
     # get occurance of each accession number
     count = df['sseqid'].value_counts()
     count = count.to_frame()
+    count.reset_index(inplace=True)
+    count.columns = ['sseqid', 'count']
     # get the mean value for each accession number
     # mean = df.groupby(['col1']).agg([np.average])
     mean = df.groupby('sseqid').mean()
-    joined_df = pd.concat([count, mean], axis=1)  # concat the two dataframes
-    joined_df.reset_index(inplace=True)  # reset indicies
+    mean.reset_index(inplace=True)
+    #
+    joined_df = pd.merge(count, mean, on = 'sseqid')
     joined_df.columns = ['sseqid', 'occurrence', 'mean_eval']
     joined_df['occurrence'] = joined_df['occurrence'].div(unique_qseqid)
     #joined_df.to_csv("acc_hitprop_meaneval.csv", sep='\t', index=False)
