@@ -25,9 +25,13 @@ if config['create_pkl_df']['Create_df'] == 'yes':
 
 if config['append_existing_pkl_df']['Append'] == 'yes':
     wd = config['append_existing_pkl_df']['Working_directory']
+    print('Your working directory is set to %s' %(wd))
     pkl_df_path = config['append_existing_pkl_df']['Path_to_pkl_df']
+    print('Path to the existing pickled dataframe : %s' %(pkl_df_path))
     data_path = config['append_existing_pkl_df']['Data_directory'].split(',')
+    print('Blast files are: %s' %(data_path))
     columns = [int(i) for i in config['append_existing_pkl_df']['Columns'].split(',')]
+    print('Targeted columns in the blast files are: %s' %(columns))
     os.chdir(wd)
     from append_df import *
     print('pkg is imported')
