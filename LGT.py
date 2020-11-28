@@ -132,9 +132,9 @@ def sort_and_select(df, output_name, num_of_top_hits, num_of_rand_hits):
             selected_random = selected_random.append(random[random['name'] == i].sample(n=num_of_rand_hits, replace=False))
         else:
             selected_random = selected_random.append(random[random['name'] == i].sample(n=len(random[random['name'] == i]), replace=False))
-        acc_removed = list(selected_random['sseqid'])
-        random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
-        top_df.append(selected_random).to_csv(output_name)
+        #acc_removed = list(selected_random['sseqid'])
+        #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
+    top_df.append(selected_random).to_csv(output_name)
         
 def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits, num_of_rand_hits, output_name):
     headers = modify_string(orthogroup)
