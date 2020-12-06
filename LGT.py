@@ -4,13 +4,15 @@ import numpy as np
 from math import nan
 import glob
 import mysql.connector
+import sys
 
 # parse_fasta_headers() parses the headers from a fasta file and stores it in a file. parse_fasta_headers() gets the directory of a fasta file as input and creates
 # a file containg the headers. for example parse_fasta_headers('OG0000000.fa') creates a file called 'headers_OG0000000' with the headers in 'OG0000000.fa'.
-def parse_fasta_headers(path_to_dir):
-    path, file_name = os.path.split(path_to_dir)
-    os.system("grep -e '>' %s >> headers_%s" %(path_to_dir, file_name.split('.', 1)[0]))
-    os.system("sed -i 's/>//g' %s/headers_%s" %(path, file_name.split('.', 1)[0]))
+def parse_fasta_headers(path_to_input, path_to_output):
+    os.chdir(path_to_output) #change the working directory to 'path_to_output'
+    path, file_name = os.path.split(path_to_input)
+    os.system("grep -e '>' %s >> headers_%s" %(path_to_input, file_name.split('.', 1)[0]))
+    os.system("sed -i 's/>//g' headers_%s" %(file_name.split('.', 1)[0]))
 
 # modify_string(x) makes sure the headers parsed from fasta files are consistent with the qseqids in pickled data frames. modify_string(x) gets the name of a
 # file containg the parsed headers from a fasta file, and makes modifications in the names if needed. In this example, modify_string('headers_OG0000000') gets
@@ -30,14 +32,14 @@ def modify_string(x):
     return content
 
 #the following function retrives info from pickle dataframe for an orthogroup, this function is called from main_search_pkl_df
-def search_pkl_df(list_of_qseqids, pickled_df):
+def search_pkl_df(list_of_qseqids, pkl_dataframe):
     alist = []
-    df = pd.read_pickle(pickled_df) #read in df
+    #df = pd.read_pickle(pickled_df) #read in df
     local_df = pd.DataFrame() #an empty df
     local_df['qseqid'] = list_of_qseqids #local_df is equal to the values of the key 'i'
-    alist.append(local_df.merge(df, left_on='qseqid', right_on='qseqid'))
+    alist.append(local_df.merge(pkl_dataframe, left_on='qseqid', right_on='qseqid'))
     merged_df = pd.DataFrame()
-    for j in alist:  
+    for j in alist:  # the for-loop merges the results retrieved from multiple processors
         merged_df = merged_df.append(j, ignore_index=True)
     merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0]) #remove version numbers from accession numbers
     return merged_df
@@ -101,7 +103,6 @@ def get_taxid_taxonomy(x, db_password):
         mydb.close()
     return acc_taxid
 
-#######
 def assign_taxid_taxonomy(df, Glob):
     df['taxonomy'] = np.nan
     #df['sseqid'] = df['sseqid'].apply(lambda x: x.split('.', 1)[0])
@@ -145,40 +146,48 @@ def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_h
             selected_random = selected_random.append(random[random['name'] == i].sample(n=len(random[random['name'] == i]), replace=False))
         #acc_removed = list(selected_random['sseqid'])
         #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
-    ortho_name = os.path.basename(output_name)
+    ortho_name = os.path.basename(element)
+    print(ortho_name)
     ortho_name = ortho_name.split('_')[1]
-    output_file_name = output_file_dir + 'LGT_' + ortho_name 
+    print(ortho_name)
+    output_file_name = output_file_dir + '/LGT_' + ortho_name
+    print(output_file_name)
     top_df.append(selected_random).to_csv(output_file_name)
-        
-def wrapper(orthogroup, list_of_names, pkl_df_path, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
-    headers = modify_string(orthogroup)
-    print('input is modified')
-    #species = get_species(headers)
-    df = search_pkl_df(headers, pkl_df_path)
-    print('accession numbers and e-values are retrieved')
-    if df.empty:
-        print('df is empty')
-        continue
-    #
-    df = remove_duplicate_accession(df)
-    print('duplicated accession numbers are removed')
-    df = get_hitproportion_meaneval(df)
-    #
-    print('hit proportions and average e-values are caluclated')
-    accessions = list(df['sseqid'])
-    chunks = [accessions[i:i + 15000] for i in range(0, len(accessions), 15000)]
-    #
-    res = []
-    for i in chunks:
-        res.append(get_taxid_taxonomy(i, db_password))
-    Glob = {}  # to join the results from the parallel run
-    for j in res:
-        Glob.update(j)  # Glob contains {accession:taxonomy}
-    #
-    print('taxid and taxonomy is obtained')
-    df1 = assign_taxid_taxonomy(df, Glob)
-    df2 = find_name(list_of_names, Glob, df1)
-    print('searching for user-defined species ...')
-    sort_and_select(df2, element, output_file_dir, num_of_top_hits, num_of_rand_hits)
-    print('a csv file with candidate accession numbers is created')
+
+def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
+    for element in orthogroups:
+        parse_fasta_headers(element, output_file_dir)
+        path, file_name = os.path.split(element)
+        orthogroup = output_file_dir + '/' + 'headers_' + file_name.split('.', 1)[0]
+        print('Orthogroup: %s' %(orthogroup))
+        headers = modify_string(orthogroup)
+        print('input is modified')
+        #species = get_species(headers)
+        df = search_pkl_df(headers, pkl_dataframe)
+        print('accession numbers and e-values are retrieved')
+        if df.empty:
+            print('df is empty')
+            continue
+        #
+        df = remove_duplicate_accession(df)
+        print('duplicated accession numbers are removed')
+        df = get_hitproportion_meaneval(df)
+        #
+        print('hit proportions and average e-values are caluclated')
+        accessions = list(df['sseqid'])
+        chunks = [accessions[i:i + 15000] for i in range(0, len(accessions), 15000)]
+        #
+        res = []
+        for i in chunks:
+            res.append(get_taxid_taxonomy(i, db_password))
+        Glob = {}  # to join the results from the parallel run
+        for j in res:
+            Glob.update(j)  # Glob contains {accession:taxonomy}
+        #
+        print('taxid and taxonomy is obtained')
+        df1 = assign_taxid_taxonomy(df, Glob)
+        df2 = find_name(list_of_names, Glob, df1)
+        print('searching for user-defined species ...')
+        sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits, num_of_rand_hits)
+        print('a csv file with candidate accession numbers is created')
 
