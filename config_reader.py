@@ -51,4 +51,9 @@ if config['data_selection']['Data_selection'] == 'yes':
     db_password = config['data_selection']['DB_password']
     output_dir = config['data_selection']['Output_dir']
     os.chdir(wd)
+    from LGT import *
+    print('pkg is imported')
+    pkl_dataframe = pd.read_pickle(pkl_df_path)
+    print(pkl_dataframe)
+    wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, number_of_top_hits, number_of_random_hits, output_dir)
     
