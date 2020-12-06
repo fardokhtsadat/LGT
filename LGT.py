@@ -190,4 +190,5 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_h
         print('searching for user-defined species ...')
         sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits, num_of_rand_hits)
         print('a csv file with candidate accession numbers is created')
+        os.system('rm %s' %(orthogroup))
 
