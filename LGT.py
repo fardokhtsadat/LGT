@@ -167,6 +167,7 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_h
         print('accession numbers and e-values are retrieved')
         if df.empty:
             print('df is empty')
+            os.system('rm %s' %(orthogroup))
             continue
         #
         df = remove_duplicate_accession(df)
