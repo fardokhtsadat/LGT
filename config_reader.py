@@ -1,7 +1,9 @@
-import configparser, os, glob
+import configparser, os, glob, sys
+
+inFile = sys.argv[1]
 
 config = configparser.ConfigParser()
-config.read_file(open('config'))
+config.read_file(open(inFile))
 
 if config['create_pkl_df']['Create_df'] == 'yes':
     wd = config['create_pkl_df']['Working_directory'] #the directory the python scripts are
