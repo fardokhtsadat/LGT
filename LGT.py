@@ -135,29 +135,26 @@ def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_h
     # 2 random elements for each taxon id.
     random = pd.concat([df, top_df]).drop_duplicates(keep=False)
     #random = random.dropna()
-    unique_names =list(pd.unique(random['name'])) #get unique rank names  ##attention, nan values are included and havv
-e to be removed
+    unique_names =list(pd.unique(random['name'])) #get unique rank names  ##attention, nan values are included and have to be removed
     #unique_names = [x for x in unique_names if str(x) != 'nan']
     #unique_names[np.isnan(unique_names)] = 0
     selected_random = pd.DataFrame()
     for i in unique_names:
         if len(random[random['name'] == i]) >= num_of_rand_hits: #if there are more than two elements for this taxid
-            selected_random = selected_random.append(random[random['name'] == i].sample(n=num_of_rand_hits, replace=Faa
-lse))
+            selected_random = selected_random.append(random[random['name'] == i].sample(n=num_of_rand_hits, replace=False))
         else:
-            selected_random = selected_random.append(random[random['name'] == i].sample(n=len(random[random['name'] ===
- i]), replace=False))
+            selected_random = selected_random.append(random[random['name'] == i].sample(n=len(random[random['name'] == i]), replace=False))
         #acc_removed = list(selected_random['sseqid'])
-        #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. tt
-his is because one accession number can be found for different names
+        #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
     ortho_name = os.path.basename(element)
     print(ortho_name)
     ortho_name = ortho_name.split('_')[1]
     print(ortho_name)
-    output_file_name = output_file_dir + '/LGT_' + ortho_name 
+    output_file_name = output_file_dir + '/LGT_' + ortho_name
     print(output_file_name)
     top_df.append(selected_random).to_csv(output_file_name)
- def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
+    
+def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
     for element in orthogroups:
         parse_fasta_headers(element, output_file_dir)
         path, file_name = os.path.split(element)
@@ -195,4 +192,4 @@ his is because one accession number can be found for different names
         sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits, num_of_rand_hits)
         print('a csv file with candidate accession numbers is created')
         os.system('rm %s' %(orthogroup))
-                                            
+
