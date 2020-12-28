@@ -37,18 +37,19 @@ if config['append_existing_pkl_df']['Append'] == 'yes':
 
 if config['data_selection']['Data_selection'] == 'yes':
     wd = config['data_selection']['Working_directory']
-    print('your working directory is set to %s' %(wd))
+    #print('your working directory is set to %s' %(wd))
     pkl_df_path = config['data_selection']['Path_to_pkl_df']
-    print('path to pickled df: %s' %(pkl_df_path))
+    #print('path to pickled df: %s' %(pkl_df_path))
     fasta_files = config['data_selection']['Path_to_input_file'].split(',')
-    print('input dirs: %s' %(fasta_files))
+    #print('input dirs: %s' %(fasta_files))
     orthogroups = []
     for afile in fasta_files:
         orthogroups.extend(glob.glob(afile))
-    print('The orthogroup is: %s' %(orthogroups))
+    #print('The orthogroup is: %s' %(orthogroups))
     list_of_names = config['data_selection']['Species_names'].split(',')
-    print('Species are: %s' %(list_of_names))
-    number_of_top_hits = int(config['data_selection']['Number_of_top_hits'])
+    #print('Species are: %s' %(list_of_names))
+    num_of_top_hits_per_qseqid = int(config['data_selection']['Number_of_top_hits_for_each_qseqid'])
+    number_of_top_hits_per_species = int(config['data_selection']['Number_of_top_hits_for_each_species'])
     number_of_random_hits = int(config['data_selection']['Number_of_random_hits'])
     db_password = config['data_selection']['DB_password']
     output_dir = config['data_selection']['Output_dir']
@@ -56,6 +57,5 @@ if config['data_selection']['Data_selection'] == 'yes':
     from LGT import *
     print('pkg is imported')
     pkl_dataframe = pd.read_pickle(pkl_df_path)
-    print(pkl_dataframe)
-    wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, number_of_top_hits, number_of_random_hits, output_dir)
-    
+    #print(pkl_dataframe)
+    wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits_per_qseqid, number_of_top_hits_per_species, number_of_random_hits, output_dir)
