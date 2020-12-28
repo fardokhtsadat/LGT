@@ -48,7 +48,8 @@ def search_pkl_df(list_of_qseqids, pkl_dataframe):
 def best_hits_for_all_seqs(df, n):
     df_sorted = df.sort_values(['evalue'], ascending=[True])
     top_df = df_sorted.groupby('qseqid').head(n)
-    return top_df
+    list_of_top_hits = top_df['sseqid'].tolist()
+    return list(set(list_of_top_hits))
     
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(df):
@@ -176,7 +177,7 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hit
             os.system('rm %s' %(orthogroup))
             continue
         #
-        top_hits_for_each_qseqid = best_hits_for_all_seqs(df, count_of_hits)
+        list_of_top_hits = best_hits_for_all_seqs(df, count_of_hits)
         df = remove_duplicate_accession(df)
         print('duplicated accession numbers are removed')
         df = get_hitproportion_meaneval(df)
