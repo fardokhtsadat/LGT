@@ -44,6 +44,12 @@ def search_pkl_df(list_of_qseqids, pkl_dataframe):
     merged_df['sseqid'] = merged_df['sseqid'].apply(lambda x: x.split('.', 1)[0]) #remove version numbers from accession numbers
     return merged_df
 
+#get best n hits for each query sequence id
+def best_hits_for_all_seqs(df, n):
+    df_sorted = df.sort_values(['evalue'], ascending=[True])
+    top_df = df_sorted.groupby('qseqid').head(n)
+    return top_df
+    
 # remove_duplicate_accession removes duplicate sseqids from the result obtained from search_pkl_df:
 def remove_duplicate_accession(df):
     df = df.groupby(['qseqid','sseqid'], as_index=False)['evalue'].min()
@@ -154,7 +160,7 @@ def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_h
     print(output_file_name)
     top_df.append(selected_random).to_csv(output_file_name)
     
-def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits, num_of_rand_hits, output_file_dir):
+def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hits, num_of_top_hits, num_of_rand_hits, output_file_dir):
     for element in orthogroups:
         parse_fasta_headers(element, output_file_dir)
         path, file_name = os.path.split(element)
@@ -170,6 +176,7 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_h
             os.system('rm %s' %(orthogroup))
             continue
         #
+        top_hits_for_each_qseqid = best_hits_for_all_seqs(df, count_of_hits)
         df = remove_duplicate_accession(df)
         print('duplicated accession numbers are removed')
         df = get_hitproportion_meaneval(df)
