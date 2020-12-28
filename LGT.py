@@ -134,9 +134,10 @@ def find_name(list_of_names, Glob, df):
         all_names_df = all_names_df.append(temp)
     return all_names_df
 
-def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_hits):
+def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_hits, list_of_top_hits):
     df = df.sort_values(['occurrence', 'mean_eval'], ascending=[False, True])
     # best 3 elements for each taxon id
+    top_hits_for_all_seqs = df[df['sseqid'].isin(list_of_top_hits)]
     top_df = df.groupby('name').head(num_of_top_hits) #we get the top 3
     #top_df = top_df.dropna() #remove nan values
     # 2 random elements for each taxon id.
@@ -153,13 +154,13 @@ def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_h
             selected_random = selected_random.append(random[random['name'] == i].sample(n=len(random[random['name'] == i]), replace=False))
         #acc_removed = list(selected_random['sseqid'])
         #random = random[~(random['sseqid'].isin(acc_removed))] #removes accession number which are already sampled. this is because one accession number can be found for different names
+    joined_df = top_hits_for_all_seqs.append(top_df)
+    joined_df = joined_df.append(selected_random)
+    joined_df = joined_df.drop_duplicates(subset=['sseqid'], keep='first') #remove duplicates
     ortho_name = os.path.basename(element)
-    print(ortho_name)
     ortho_name = ortho_name.split('_')[1]
-    print(ortho_name)
     output_file_name = output_file_dir + '/LGT_' + ortho_name
-    print(output_file_name)
-    top_df.append(selected_random).to_csv(output_file_name)
+    joined_df.to_csv(output_file_name)
     
 def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hits, num_of_top_hits, num_of_rand_hits, output_file_dir):
     for element in orthogroups:
@@ -197,7 +198,7 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hit
         df1 = assign_taxid_taxonomy(df, Glob)
         df2 = find_name(list_of_names, Glob, df1)
         print('searching for user-defined species ...')
-        sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits, num_of_rand_hits)
+        sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits, num_of_rand_hits, list_of_top_hits)
         print('a csv file with candidate accession numbers is created')
         os.system('rm %s' %(orthogroup))
 
