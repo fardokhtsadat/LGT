@@ -162,7 +162,7 @@ def sort_and_select(df, element, output_file_dir, num_of_top_hits, num_of_rand_h
     output_file_name = output_file_dir + '/LGT_' + ortho_name
     joined_df.to_csv(output_file_name)
     
-def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hits, num_of_top_hits, num_of_rand_hits, output_file_dir):
+def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits_per_qseqid, num_of_top_hits_per_species, num_of_rand_hits, output_file_dir):
     for element in orthogroups:
         parse_fasta_headers(element, output_file_dir)
         path, file_name = os.path.split(element)
@@ -178,7 +178,7 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hit
             os.system('rm %s' %(orthogroup))
             continue
         #
-        list_of_top_hits = best_hits_for_all_seqs(df, count_of_hits)
+        list_of_top_hits = best_hits_for_all_seqs(df, num_of_top_hits_per_qseqid)
         df = remove_duplicate_accession(df)
         print('duplicated accession numbers are removed')
         df = get_hitproportion_meaneval(df)
@@ -198,7 +198,7 @@ def wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, count_of_hit
         df1 = assign_taxid_taxonomy(df, Glob)
         df2 = find_name(list_of_names, Glob, df1)
         print('searching for user-defined species ...')
-        sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits, num_of_rand_hits, list_of_top_hits)
+        sort_and_select(df2, orthogroup, output_file_dir, num_of_top_hits_per_species, num_of_rand_hits, list_of_top_hits)
         print('a csv file with candidate accession numbers is created')
         os.system('rm %s' %(orthogroup))
 
