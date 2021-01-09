@@ -2,20 +2,20 @@
 ## the config file consists of three sections: 1.create_pkl_df 2.append_existing_pkl_df 3.data_selection
 
 ## in the 'create_pkl_df' section, by specifing the parameters, you can create a new pickled dataframe from your blast results.
-### to create a new pickled dataframe set 'Create_df' = yes.
-### 'Working_directory' is the directory to LGT file containg all the scripts.
-### 'Data_directory' is the path to your blast results. you can choose mutiple paths separated by ','. 
-### 'Columns' refers to the number of columns in the blast files that contain the qseqid, sseqid, and the evalue respectively.
+### to create a new pickled dataframe, set 'Create_df' = yes.
+### 'Working_directory' is the directory of LGT that containg all the scripts.
+### 'Data_directory' is the path to your blast results. You can choose mutiple paths separated by ',', without any spaces.
+### 'Columns' refers to the column number in the blast files that contain the qseqid, sseqid, and the evalue respectively.
 ### 'Pkl_df_path_and_name' is the directory and the name of the final pickle dataframe.
 ### 'Number_of_cpus' is the count of total cpus. the process of creating a pickle dataframe can be sped up by using more cpus. we suggest choosing as many cpus as the number of 'Data_directory'.
-
+  
 [create_pkl_df]
 Create_df = no
-Working_directory = /home/users/wd
-Data_directory = /home/users/file1.blastp,/home/users/file2.blastp
-Columns = 0,1,11
-Pkl_df_path_and_name = /home/users/pickle_df.pkl
-Number_of_cpus = 3
+Working_directory = /home/users/LGT_diplo/LGT
+Data_directory = /home/users/LGT_diplo/blast_results_ALL/BOT/*PROK.blastp,/home/users/LGT_diplo/blast_results_ALL/CONGO/*PROK.blastp
+Columns = 0,2,11
+Pkl_df_path_and_name = /home/users/LGT_diplo/prok_df.pkl
+Number_of_cpus = 13
 
 ## in the 'append_existing_pkl_df' section, you can add new blast results to an existing pickle dataframe.
 ### to append set 'Append' = yes.
@@ -26,29 +26,32 @@ Number_of_cpus = 3
 
 [append_existing_pkl_df]
 Append = no
-Working_directory = /home/users/wd
-Path_to_pkl_df = /home/users/pickle_df.pkl
-Data_directory = /home/users/file1.blastp,/home/users/file2.blastp
-Columns = 0,1
+Working_directory = /home/users/LGT_diplo/LGT
+Path_to_pkl_df = /home/users/LGT_diplo/prok_df.pkl
+Data_directory = /home/users/LGT_diplo/blast_results_ALL/DAR/*PROK.blastp
+Columns = 0,2,11
 
 ## in the 'data_selection' section, you can search the pickled dataframe for a user_defined orthogroup and a set of species.
 ### to start the data selection, set 'Data_selection' = yes,
 ### 'Working_directory' is the directory to LGT file containg all the scripts.
 ### 'Path_to_pkl_df' is the path of the existing dataframe
 ### 'Path_to_input_file' is the path to an orthogroup file
-### 'Species_names' are the user_defined species. The names should be separated by ','. The names should be written based on how the sepcies' names are written on the taxonomy browser in ncbi.
-### 'Number_of_top_hits' is the count of the best hits for each of the species.
+### 'Species_names' are the user_defined species. The names should be separated by ',' witout aby spaces. The names should be written based on how the sepcies' names are written on the taxonomy browser on ncbi.
+### 'Number_of_top_hits_for_each_qseqid' is the count of teh best hits for each query sequence id.
+### 'Number_of_top_hits_for_each_species' is the count of the best hits for each of the species.
 ### 'Number_of_random_hits' is the count of the random hits for each of the species.
 ### 'DB_password' is the password for the taxonomy mysql db.
-### 'Output_path_name' is the path to the final output. the output contains multiple columns: 'sseqid', 'occurrence', 'mean_eval', 'taxonomy,name'
+### 'Output_dir' is the path to the final output. the output contains multiple columns: 'sseqid', 'occurrence', 'mean_eval', 'taxonomy', 'name'
 
 [data_selection]
-Data_selection = no
-Working_directory = /home/users/wd
-Path_to_pkl_df = /home/users/pickle_df.pkl
-Path_to_input_file = /home/users/input_file
-Species_names = Metazoa,Fungi
-Number_of_top_hits: 3
-Number_of_random_hits: 2
+Data_selection = yes
+Working_directory = /home/users/LGT_diplo/LGT
+Path_to_pkl_df = /home/users/LGT_diplo/euk_df.pkl
+Path_to_input_file = /home/users/kolecko_shared/DIPLO_ORTHOFINDER/OrthoFinder/Results_May07/Orthogroup_Sequences/OG0002764.fa,/home/users/kolecko_shared/DIPLO_ORTHOFINDER/OrthoFinder/Results_May07/Orthogroup_Sequences/OG0000022.fa
+Species_names = Discosea,Evosea,Tubulinea,Amoebozoa incertae sedis,unclassified Amoebozoa,uncultured Amoebozoa
+Number_of_top_hits_for_each_qseqid= 2
+Number_of_top_hits_for_each_species= 2
+Number_of_random_hits= 2
 DB_password = password
-Output_path_name = /home/users/output_file.csv
+Output_dir = /home/users/LGT_diplo/test_run
+
