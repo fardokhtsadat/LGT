@@ -58,4 +58,5 @@ if config['data_selection']['Data_selection'] == 'yes':
     print('pkg is imported')
     pkl_dataframe = pd.read_pickle(pkl_df_path)
     wrapper(orthogroups, list_of_names, pkl_dataframe, db_password, num_of_top_hits_per_qseqid, number_of_top_hits_per_species, number_of_random_hits, output_dir)
+    
 
