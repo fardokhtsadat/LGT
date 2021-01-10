@@ -22,13 +22,13 @@ def parse_fasta_headers(path_to_input, path_to_output):
 def modify_string(x):
     with open(x) as f:
         content = f.readlines()
-    content = [x.strip() for x in content]
-    substring = "_alternative"
-    for i in range(len(content)):
-        if substring in content[i]:
-            content[i] = content[i][:content[i].rfind(substring)]
-        else:
-            content[i] = content[i]
+    #content = [x.strip() for x in content]
+    #substring = "_alternative"
+    #for i in range(len(content)):
+        #if substring in content[i]:
+            #content[i] = content[i][:content[i].rfind(substring)]
+        #else:
+            #content[i] = content[i]
     return content
 
 #the following function retrives info from pickle dataframe for an orthogroup, this function is called from main_search_pkl_df
